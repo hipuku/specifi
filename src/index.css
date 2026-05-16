@@ -1,0 +1,232 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* ─── Fonts ─────────────────────────────────────────────────────────────── */
+  --font-sans:       'Parkinsans', system-ui, sans-serif;
+  --font-mono:       'Geist Mono', 'Fira Code', monospace;
+
+  /* ─── Type scale (from hipuku-web primitives) ────────────────────────────── */
+  --text-display:    clamp(3.5rem, 7vw + 1rem, 7.125rem);
+  --text-h1:         clamp(2.625rem, 5vw + 0.75rem, 5.1875rem);
+  --text-h2:         clamp(2rem, 3.5vw + 0.5rem, 3.75rem);
+  --text-h3:         clamp(1.5rem, 2.5vw + 0.25rem, 2.5rem);
+  --text-h4:         clamp(1.25rem, 1.5vw + 0.25rem, 1.75rem);
+  --text-h5:         clamp(1.125rem, 1vw + 0.25rem, 1.375rem);
+  --text-h6:         1.125rem;
+  --text-p-lg:       1.375rem;
+  --text-p-base:     1.125rem;
+  --text-p-sm:       1rem;
+  --text-annotation: 0.8125rem;
+  --text-code:       0.9375rem;
+
+  /* ─── Spacing (4px base, from hipuku-web primitives) ────────────────────── */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* ─── Motion (from hipuku-web motion.css) ────────────────────────────────── */
+  --ease-standard:   cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --ease-sharp:      cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-smooth:     cubic-bezier(0.45, 0, 0.55, 1);
+  --duration-instant: 0.1s;
+  --duration-fast:    0.15s;
+  --duration-base:    0.2s;
+  --duration-slow:    0.3s;
+  --duration-enter:   0.4s;
+
+  /* ─── Full color palette (from hipuku-web primitives) ───────────────────── */
+  --color-nebula-dark:      #0D7A4F;
+  --color-nebula:           #15AD70;
+  --color-nebula-light:     #B4EDCF;
+
+  --color-aurora-dark:      #5A9E3A;
+  --color-aurora:           #82D25D;
+  --color-aurora-light:     #C5F0A9;
+
+  --color-tidal-dark:       #3FA8A1;
+  --color-tidal:            #68D0CA;
+  --color-tidal-light:      #B3EBE4;
+
+  --color-orbit-dark:       #4A9FD0;
+  --color-orbit:            #73BDE7;
+  --color-orbit-light:      #C4E5F7;
+
+  --color-pulsar-dark:      #4468D8;
+  --color-pulsar:           #7193ED;
+  --color-pulsar-light:     #C2CFFA;
+
+  --color-quasar-dark:      #9B72E6;
+  --color-quasar:           #BF9FF1;
+  --color-quasar-light:     #E4D6FB;
+
+  --color-corona-dark:      #F28BAD;
+  --color-corona:           #F9C3D6;
+  --color-corona-light:     #FCE4EE;
+
+  --color-dusk-dark:        #E0B090;
+  --color-dusk:             #F5D4C0;
+  --color-dusk-light:       #FAF0E8;
+
+  --color-flare-dark:       #C83D25;
+  --color-flare:            #E15E42;
+  --color-flare-light:      #F0A090;
+
+  --color-solstice-dark:    #D46A0A;
+  --color-solstice:         #F78D2C;
+  --color-solstice-light:   #FDE4C0;
+
+  --color-supernova-dark:   #D4A000;
+  --color-supernova:        #FFC700;
+  --color-supernova-light:  #FFE480;
+
+  --color-void-0:   #121213;
+  --color-void-10:  #1F1F20;
+  --color-void-20:  #2B2B2C;
+  --color-void-30:  #383839;
+  --color-void-40:  #575759;
+  --color-void-50:  #838385;
+  --color-void-60:  #B1B1B3;
+  --color-void-70:  #D3D3D5;
+  --color-void-80:  #E8E8EA;
+  --color-void-90:  #F1F1F4;
+
+  /* ─── shadcn token bridge ────────────────────────────────────────────────── */
+  --color-background:                  var(--background);
+  --color-foreground:                  var(--foreground);
+  --color-card:                        var(--card);
+  --color-card-foreground:             var(--card-foreground);
+  --color-popover:                     var(--popover);
+  --color-popover-foreground:          var(--popover-foreground);
+  --color-primary:                     var(--primary);
+  --color-primary-foreground:          var(--primary-foreground);
+  --color-secondary:                   var(--secondary);
+  --color-secondary-foreground:        var(--secondary-foreground);
+  --color-muted:                       var(--muted);
+  --color-muted-foreground:            var(--muted-foreground);
+  --color-accent:                      var(--accent);
+  --color-accent-foreground:           var(--accent-foreground);
+  --color-destructive:                 var(--destructive);
+  --color-border:                      var(--border);
+  --color-input:                       var(--input);
+  --color-ring:                        var(--ring);
+  --color-sidebar:                     var(--sidebar);
+  --color-sidebar-foreground:          var(--sidebar-foreground);
+  --color-sidebar-primary:             var(--sidebar-primary);
+  --color-sidebar-primary-foreground:  var(--sidebar-primary-foreground);
+  --color-sidebar-accent:              var(--sidebar-accent);
+  --color-sidebar-accent-foreground:   var(--sidebar-accent-foreground);
+  --color-sidebar-border:              var(--sidebar-border);
+  --color-sidebar-ring:                var(--sidebar-ring);
+
+  --radius-sm:  calc(var(--radius) * 0.6);
+  --radius-md:  calc(var(--radius) * 0.8);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.4);
+}
+
+/* ─── Dark theme — default (matches Figma) ───────────────────────────────── */
+:root, .dark {
+  --background:                  var(--color-void-0);
+  --foreground:                  var(--color-void-90);
+  --card:                        var(--color-void-10);
+  --card-foreground:             var(--color-void-90);
+  --popover:                     var(--color-void-20);
+  --popover-foreground:          var(--color-void-90);
+  --primary:                     var(--color-solstice);
+  --primary-foreground:          var(--color-void-0);
+  --secondary:                   var(--color-void-20);
+  --secondary-foreground:        var(--color-void-90);
+  --muted:                       var(--color-void-20);
+  --muted-foreground:            var(--color-void-50);
+  --accent:                      var(--color-void-20);
+  --accent-foreground:           var(--color-void-90);
+  --destructive:                 var(--color-flare);
+  --border:                      var(--color-void-20);
+  --input:                       var(--color-void-20);
+  --ring:                        var(--color-solstice);
+  --radius:                      0.5rem;
+
+  --sidebar:                     var(--color-void-10);
+  --sidebar-foreground:          var(--color-void-90);
+  --sidebar-primary:             var(--color-solstice);
+  --sidebar-primary-foreground:  var(--color-void-0);
+  --sidebar-accent:              var(--color-void-20);
+  --sidebar-accent-foreground:   var(--color-void-90);
+  --sidebar-border:              var(--color-void-20);
+  --sidebar-ring:                var(--color-solstice);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-size: var(--text-p-sm);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ─── HipukuLogo — registered fills + bounce ────────────────────────────────── */
+@property --fill-h  { syntax: '<color>'; inherits: true; initial-value: #BF9FF1; }
+@property --fill-i  { syntax: '<color>'; inherits: true; initial-value: #BF9FF1; }
+@property --fill-p  { syntax: '<color>'; inherits: true; initial-value: #F28BAD; }
+@property --fill-u1 { syntax: '<color>'; inherits: true; initial-value: #E15E42; }
+@property --fill-k  { syntax: '<color>'; inherits: true; initial-value: #F78D2C; }
+@property --fill-u2 { syntax: '<color>'; inherits: true; initial-value: #7193ED; }
+
+.logo-h  { fill: var(--fill-h);  transition: fill var(--duration-enter) var(--ease-smooth); }
+.logo-i  { fill: var(--fill-i);  transition: fill var(--duration-enter) var(--ease-smooth); }
+.logo-p  { fill: var(--fill-p);  transition: fill var(--duration-enter) var(--ease-smooth); }
+.logo-u1 { fill: var(--fill-u1); transition: fill var(--duration-enter) var(--ease-smooth); }
+.logo-k  { fill: var(--fill-k);  transition: fill var(--duration-enter) var(--ease-smooth); }
+.logo-u2 { fill: var(--fill-u2); transition: fill var(--duration-enter) var(--ease-smooth); }
+
+.logo-h, .logo-i, .logo-p, .logo-u1, .logo-k, .logo-u2 {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+@keyframes letter-bounce {
+  0%   { transform: translateY(0);    }
+  28%  { transform: translateY(-8px); }
+  52%  { transform: translateY(2px);  }
+  72%  { transform: translateY(-4px); }
+  86%  { transform: translateY(1px);  }
+  95%  { transform: translateY(-1px); }
+  100% { transform: translateY(0);    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hipuku-logo:hover .logo-h  { animation: letter-bounce 0.55s linear 0ms   both; }
+  .hipuku-logo:hover .logo-i  { animation: letter-bounce 0.55s linear 45ms  both; }
+  .hipuku-logo:hover .logo-p  { animation: letter-bounce 0.55s linear 90ms  both; }
+  .hipuku-logo:hover .logo-u1 { animation: letter-bounce 0.55s linear 135ms both; }
+  .hipuku-logo:hover .logo-k  { animation: letter-bounce 0.55s linear 180ms both; }
+  .hipuku-logo:hover .logo-u2 { animation: letter-bounce 0.55s linear 225ms both; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-h, .logo-i, .logo-p, .logo-u1, .logo-k, .logo-u2 {
+    transition: none;
+    animation: none !important;
+  }
+}

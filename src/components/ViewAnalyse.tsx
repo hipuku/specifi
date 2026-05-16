@@ -1,0 +1,225 @@
+import { useState, useMemo } from 'react'
+import { analyse } from '@/parser/specificity'
+import { simpleToToken } from '@/parser/flatten'
+import type { SelectorListNode, ComplexSelectorNode, CompoundSelectorNode, CombinatorNode } from '@/parser/types'
+import { TOKEN_STYLES, AXIS_COLORS } from './tokenStyles'
+import { cn } from '@/lib/utils'
+
+export function ViewAnalyse() {
+  const [input, setInput] = useState('')
+
+  const result = useMemo(() => {
+    const trimmed = input.trim()
+    if (!trimmed) return null
+    return analyse(trimmed)
+  }, [input])
+
+  const hasInput = input.trim().length > 0
+  const hasError = hasInput && !!result?.error
+  const hasResult = hasInput && !hasError && (result?.ast.selectors.length ?? 0) > 0
+  const selectorCount = result?.ast.selectors.length ?? 0
+
+  return (
+    <div className="flex flex-col gap-8 max-w-3xl mx-auto w-full">
+
+      {/* ── Title ── */}
+      <div className="flex flex-col gap-1">
+        <h1 className="text-h4 font-semibold text-void-90">Analyse a selector</h1>
+        <p className="text-p-sm text-void-60">
+          Enter a single CSS selector to see its specificity score and breakdown.
+        </p>
+      </div>
+
+      {/* ── Input ── */}
+      <div className="flex flex-col gap-2">
+        <label
+          htmlFor="selector-input"
+          className="text-annotation text-void-60 uppercase tracking-[0.08em]"
+        >
+          Selector
+        </label>
+        <input
+          id="selector-input"
+          type="text"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="e.g. nav > ul li.active:not([hidden])::before"
+          spellCheck={false}
+          autoComplete="off"
+          className={cn(
+            'font-mono text-code bg-void-10 rounded-[10px] px-4 py-3 w-full outline-none transition-colors duration-150 border',
+            hasError
+              ? 'border-flare text-flare'
+              : 'border-void-20 text-void-90 focus:border-void-40',
+          )}
+        />
+        {hasError && (
+          <p className="text-annotation text-flare">{result?.error}</p>
+        )}
+      </div>
+
+      {/* ── Results ── */}
+      {hasResult && result && (
+        <div className="flex flex-col gap-6">
+          {selectorCount > 1 && (
+            <p className="text-annotation text-void-50">
+              Highest specificity across {selectorCount} selectors
+            </p>
+          )}
+          <div className="flex gap-3">
+            <ScoreCard label="[a] IDs"     value={result.specificity.a} color={AXIS_COLORS.a} />
+            <ScoreCard label="[b] classes" value={result.specificity.b} color={AXIS_COLORS.b} />
+            <ScoreCard label="[c] types"   value={result.specificity.c} color={AXIS_COLORS.c} />
+          </div>
+          <TreeBreakdown ast={result.ast} />
+        </div>
+      )}
+
+      {/* ── Empty state ── */}
+      {!hasInput && <EmptyHint onSelect={setInput} />}
+    </div>
+  )
+}
+
+// ─── Score card ────────────────────────────────────────────────────────────────
+
+function ScoreCard({ label, value, color }: { label: string; value: number; color: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-1 rounded-xl py-4 flex-1 bg-void-20 border border-void-30">
+      <span className="font-mono text-h3 leading-none" style={{ color }}>
+        {value}
+      </span>
+      <span
+        className="text-annotation text-void-50"
+        style={{ fontVariantCaps: 'all-small-caps', letterSpacing: '0.08em' }}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
+
+// ─── Tree breakdown ────────────────────────────────────────────────────────────
+
+function TreeBreakdown({ ast }: { ast: SelectorListNode }) {
+  return (
+    <div className="flex flex-col gap-6">
+      {ast.selectors.map((complex, i) => (
+        <div key={i} className="flex flex-col gap-0">
+          {ast.selectors.length > 1 && (
+            <p className="text-annotation text-void-50 mb-2">Selector {i + 1}</p>
+          )}
+          <ComplexTree node={complex} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ComplexTree({ node }: { node: ComplexSelectorNode }) {
+  return (
+    <div className="flex flex-col">
+      {node.parts.map((part, i) =>
+        part.type === 'Combinator'
+          ? <CombinatorBridge key={i} node={part as CombinatorNode} />
+          : <CompoundBlock key={i} node={part as CompoundSelectorNode} />
+      )}
+    </div>
+  )
+}
+
+// ─── Combinator connector ──────────────────────────────────────────────────────
+
+const COMBINATOR_META: Record<string, { symbol: string; label: string }> = {
+  '>': { symbol: '›',  label: 'child' },
+  '+': { symbol: '+',  label: 'adjacent sibling' },
+  '~': { symbol: '~',  label: 'general sibling' },
+  ' ': { symbol: '↓',  label: 'descendant' },
+}
+
+function CombinatorBridge({ node }: { node: CombinatorNode }) {
+  const meta = COMBINATOR_META[node.value] ?? { symbol: node.value, label: '' }
+  return (
+    <div className="flex items-center gap-3 py-[5px] px-[14px]">
+      <div className="w-px h-[18px] bg-void-30 ml-[7px] shrink-0" />
+      <span className="font-mono text-annotation text-void-40">{meta.symbol}</span>
+      <span
+        className="text-annotation text-void-40"
+        style={{ fontVariantCaps: 'all-small-caps', letterSpacing: '0.08em' }}
+      >
+        {meta.label}
+      </span>
+    </div>
+  )
+}
+
+// ─── Compound block ────────────────────────────────────────────────────────────
+
+function CompoundBlock({ node }: { node: CompoundSelectorNode }) {
+  return (
+    <div className="rounded-xl overflow-hidden border border-void-20 bg-void-10">
+      {node.simples.map((simple, i) => {
+        const token = simpleToToken(simple)
+        const style = TOKEN_STYLES[token.axis] ?? TOKEN_STYLES.unknown
+        const isLast = i === node.simples.length - 1
+        const isAxised = token.axis === 'a' || token.axis === 'b' || token.axis === 'c'
+        const isUnknown = token.axis === 'unknown'
+
+        return (
+          <div
+            key={i}
+            className={cn('flex items-center gap-4 px-[14px] py-[9px]', !isLast && 'border-b border-void-20')}
+          >
+            <code className="font-mono text-annotation flex-1" style={{ color: style.color }}>
+              {token.text}
+            </code>
+            {token.label && (
+              <span
+                className="text-annotation text-void-40 min-w-24"
+                style={{ fontVariantCaps: 'all-small-caps', letterSpacing: '0.08em' }}
+              >
+                {token.label}
+              </span>
+            )}
+            {isAxised && (
+              <span className="font-mono text-annotation min-w-[10px] text-right opacity-70" style={{ color: style.color }}>
+                {token.axis}
+              </span>
+            )}
+            {isUnknown && (
+              <span className="font-mono text-annotation text-void-40 min-w-[10px] text-right">0</span>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+// ─── Empty hint ────────────────────────────────────────────────────────────────
+
+function EmptyHint({ onSelect }: { onSelect: (val: string) => void }) {
+  const examples = [
+    'nav > ul li.active',
+    '#header .logo::before',
+    'input[type="email"]:focus',
+    ':is(h1, h2, h3) + p',
+    'a:not(.disabled):hover',
+  ]
+  return (
+    <div className="flex flex-col gap-3 mt-2">
+      <p className="text-annotation text-void-50 uppercase tracking-[0.08em]">Try an example</p>
+      <div className="flex flex-wrap gap-2">
+        {examples.map(ex => (
+          <button
+            key={ex}
+            onClick={() => onSelect(ex)}
+            className="font-mono text-annotation bg-void-10 rounded-lg px-[10px] py-1 cursor-pointer transition-colors duration-150 border border-void-20 text-void-60 hover:text-void-90 hover:border-void-40"
+          >
+            {ex}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
