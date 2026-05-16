@@ -145,7 +145,7 @@ export function tokenise(input: string): Token[] {
     // Identifiers: element names, class names, pseudo names, attribute names
     if (/[a-zA-Z_\-\\]/.test(ch) || (ch === '-' && i + 1 < input.length && /[a-zA-Z_]/.test(input[i + 1]))) {
       const start = i
-      while (i < input.length && /[\w\-]/.test(input[i])) i++
+      while (i < input.length && /[\w-]/.test(input[i])) i++
       tokens.push({ type: 'IDENT', value: input.slice(start, i), pos: start })
       continue
     }
