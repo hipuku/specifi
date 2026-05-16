@@ -54,9 +54,17 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Create Cloudflare Pages project (no-op if exists)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages project create specifi --production-branch=main
+        continue-on-error: true
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=specifi
+          command: pages deploy dist --project-name=specifi --branch=main --commit-dirty=true
