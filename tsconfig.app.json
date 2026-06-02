@@ -22,7 +22,7 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Path alias */
-    "paths": { "@/*": ["./src/*"], "@kern/*": ["../kern/src/*"] }
+    "paths": { "@/*": ["./src/*"], "@kern/*": ["./node_modules/kern/src/*"] }
   },
   "include": ["src"]
 }

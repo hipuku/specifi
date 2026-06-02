@@ -9,7 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@kern': path.resolve(__dirname, '../kern/src'),
+      '@kern': path.resolve(__dirname, 'node_modules/kern/src'),
     },
   },
   test: {
