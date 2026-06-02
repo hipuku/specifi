@@ -24,8 +24,8 @@ export function ViewAnalyse() {
 
       {/* ── Title ── */}
       <div className="flex flex-col gap-1">
-        <h1 className="text-h4 font-semibold text-void-90">Analyse a selector</h1>
-        <p className="text-p-sm text-void-60">
+        <h1 className="type-h4 text-void-90">Analyse a selector</h1>
+        <p className="type-p-sm text-void-60">
           Enter a single CSS selector to see its specificity score and breakdown.
         </p>
       </div>
@@ -34,7 +34,7 @@ export function ViewAnalyse() {
       <div className="flex flex-col gap-2">
         <label
           htmlFor="selector-input"
-          className="text-annotation text-void-60 uppercase tracking-[0.08em]"
+          className="type-annotation-sc text-void-60"
         >
           Selector
         </label>
@@ -47,14 +47,14 @@ export function ViewAnalyse() {
           spellCheck={false}
           autoComplete="off"
           className={cn(
-            'font-mono text-code bg-void-10 rounded-[10px] px-4 py-3 w-full outline-none transition-colors duration-150 border',
+            'type-code bg-void-10 rounded-lg px-4 py-3 w-full outline-none transition-colors duration-150 border',
             hasError
               ? 'border-flare text-flare'
               : 'border-void-20 text-void-90 focus:border-void-40',
           )}
         />
         {hasError && (
-          <p className="text-annotation text-flare">{result?.error}</p>
+          <p className="type-annotation text-flare">{result?.error}</p>
         )}
       </div>
 
@@ -62,7 +62,7 @@ export function ViewAnalyse() {
       {hasResult && result && (
         <div className="flex flex-col gap-6">
           {selectorCount > 1 && (
-            <p className="text-annotation text-void-50">
+            <p className="type-annotation text-void-50">
               Highest specificity across {selectorCount} selectors
             </p>
           )}
@@ -86,13 +86,10 @@ export function ViewAnalyse() {
 function ScoreCard({ label, value, color }: { label: string; value: number; color: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-1 rounded-xl py-4 flex-1 bg-void-20 border border-void-30">
-      <span className="font-mono text-h3 leading-none" style={{ color }}>
+      <span className="type-h4 font-mono leading-none" style={{ color }}>
         {value}
       </span>
-      <span
-        className="text-annotation text-void-50"
-        style={{ fontVariantCaps: 'all-small-caps', letterSpacing: '0.08em' }}
-      >
+      <span className="type-annotation-sc text-void-50">
         {label}
       </span>
     </div>
@@ -107,7 +104,7 @@ function TreeBreakdown({ ast }: { ast: SelectorListNode }) {
       {ast.selectors.map((complex, i) => (
         <div key={i} className="flex flex-col gap-0">
           {ast.selectors.length > 1 && (
-            <p className="text-annotation text-void-50 mb-2">Selector {i + 1}</p>
+            <p className="type-annotation text-void-50 mb-2">Selector {i + 1}</p>
           )}
           <ComplexTree node={complex} />
         </div>
@@ -142,11 +139,8 @@ function CombinatorBridge({ node }: { node: CombinatorNode }) {
   return (
     <div className="flex items-center gap-3 py-[5px] px-[14px]">
       <div className="w-px h-[18px] bg-void-30 ml-[7px] shrink-0" />
-      <span className="font-mono text-annotation text-void-40">{meta.symbol}</span>
-      <span
-        className="text-annotation text-void-40"
-        style={{ fontVariantCaps: 'all-small-caps', letterSpacing: '0.08em' }}
-      >
+      <span className="type-annotation font-mono text-void-40">{meta.symbol}</span>
+      <span className="type-annotation-sc text-void-60">
         {meta.label}
       </span>
     </div>
@@ -170,24 +164,23 @@ function CompoundBlock({ node }: { node: CompoundSelectorNode }) {
             key={i}
             className={cn('flex items-center gap-4 px-[14px] py-[9px]', !isLast && 'border-b border-void-20')}
           >
-            <code className="font-mono text-annotation flex-1" style={{ color: style.color }}>
+            <code className="type-annotation font-mono flex-1" style={{ color: style.color }}>
               {token.text}
             </code>
             {token.label && (
               <span
-                className="text-annotation text-void-40 min-w-24"
-                style={{ fontVariantCaps: 'all-small-caps', letterSpacing: '0.08em' }}
+                className="type-annotation-sc text-void-60 min-w-24"
               >
                 {token.label}
               </span>
             )}
             {isAxised && (
-              <span className="font-mono text-annotation min-w-[10px] text-right opacity-70" style={{ color: style.color }}>
+              <span className="type-annotation font-mono min-w-[10px] text-right opacity-70" style={{ color: style.color }}>
                 {token.axis}
               </span>
             )}
             {isUnknown && (
-              <span className="font-mono text-annotation text-void-40 min-w-[10px] text-right">0</span>
+              <span className="type-annotation font-mono text-void-40 min-w-[10px] text-right">0</span>
             )}
           </div>
         )
@@ -208,13 +201,13 @@ function EmptyHint({ onSelect }: { onSelect: (val: string) => void }) {
   ]
   return (
     <div className="flex flex-col gap-3 mt-2">
-      <p className="text-annotation text-void-50 uppercase tracking-[0.08em]">Try an example</p>
+      <p className="type-annotation-sc text-void-50">Try an example</p>
       <div className="flex flex-wrap gap-2">
         {examples.map(ex => (
           <button
             key={ex}
             onClick={() => onSelect(ex)}
-            className="font-mono text-annotation bg-void-10 rounded-lg px-[10px] py-1 cursor-pointer transition-colors duration-150 border border-void-20 text-void-60 hover:text-void-90 hover:border-void-40"
+            className="type-annotation font-mono bg-void-10 rounded-lg px-[10px] py-1 cursor-pointer transition-colors duration-150 border border-void-20 text-void-60 hover:text-void-90 hover:border-void-40"
           >
             {ex}
           </button>

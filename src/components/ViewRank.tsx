@@ -54,8 +54,8 @@ export function ViewRank() {
 
       {/* ── Title ── */}
       <div className="flex flex-col gap-1">
-        <h1 className="text-h4 font-semibold text-void-90">Rank a stylesheet</h1>
-        <p className="text-p-sm text-void-60">
+        <h1 className="type-h4 text-void-90">Rank a stylesheet</h1>
+        <p className="type-p-sm text-void-60">
           Paste any CSS below. All selectors are extracted, deduplicated, and sorted by specificity.
         </p>
       </div>
@@ -64,7 +64,7 @@ export function ViewRank() {
       <div className="flex flex-col gap-2">
         <label
           htmlFor="css-input"
-          className="text-annotation text-void-60 uppercase tracking-[0.08em]"
+          className="type-annotation-sc text-void-60"
         >
           CSS
         </label>
@@ -75,21 +75,21 @@ export function ViewRank() {
           rows={10}
           placeholder={PLACEHOLDER}
           spellCheck={false}
-          className="font-mono text-annotation text-void-80 bg-void-10 rounded-[10px] px-4 py-3 w-full outline-none resize-y leading-[1.7] transition-colors duration-150 border border-void-20 focus:border-void-40"
+          className="type-annotation font-mono text-void-80 bg-void-10 rounded-lg px-4 py-3 w-full outline-none resize-y transition-colors duration-150 border border-void-20 focus:border-void-40"
         />
       </div>
 
       {/* ── Results ── */}
       {hasInput && ranked.length === 0 && (
-        <p className="text-p-sm text-void-50">
+        <p className="type-p-sm text-void-50">
           No selectors found. Make sure your CSS contains rules like{' '}
-          <code className="font-mono text-code text-orbit">.class {'{ }'}</code>.
+          <code className="type-code text-orbit">.class {'{ }'}</code>.
         </p>
       )}
 
       {ranked.length > 0 && (
         <div className="flex flex-col gap-2">
-          <p className="text-annotation text-void-50 uppercase tracking-[0.08em]">
+          <p className="type-annotation-sc text-void-50">
             {ranked.length} selector{ranked.length !== 1 ? 's' : ''} — ranked highest first
           </p>
 
@@ -120,7 +120,7 @@ function RankRow({ entry, rank, total }: { entry: RankedEntry; rank: number; tot
     >
       <span
         className={cn(
-          'font-mono text-annotation min-w-8 text-right',
+          'type-annotation font-mono min-w-8 text-right',
           rank === 1 ? 'text-supernova' : 'text-void-40',
         )}
       >
@@ -128,7 +128,7 @@ function RankRow({ entry, rank, total }: { entry: RankedEntry; rank: number; tot
       </span>
 
       <code
-        className={cn('flex-1 truncate font-mono text-annotation', entry.error ? 'text-flare' : 'text-void-80')}
+        className={cn('flex-1 truncate type-annotation font-mono', entry.error ? 'text-flare' : 'text-void-80')}
         title={entry.selector}
       >
         {entry.selector}
@@ -139,17 +139,17 @@ function RankRow({ entry, rank, total }: { entry: RankedEntry; rank: number; tot
           <SpecChip value={entry.a} color={AXIS_COLORS.a} label="a" />
           <SpecChip value={entry.b} color={AXIS_COLORS.b} label="b" />
           <SpecChip value={entry.c} color={AXIS_COLORS.c} label="c" />
-          <span className="font-mono text-annotation text-void-50 min-w-[72px] text-right">
+          <span className="type-annotation font-mono text-void-50 min-w-[72px] text-right">
             {spec}
           </span>
         </div>
       )}
 
       {entry.error && (
-        <span className="text-annotation text-flare">parse error</span>
+        <span className="type-annotation text-flare">parse error</span>
       )}
 
-      <span className="text-annotation text-void-40 min-w-[3rem] text-right font-mono">
+      <span className="type-annotation font-mono text-void-40 min-w-[3rem] text-right">
         :{entry.line}
       </span>
     </div>
@@ -159,7 +159,7 @@ function RankRow({ entry, rank, total }: { entry: RankedEntry; rank: number; tot
 function SpecChip({ value, color, label }: { value: number; color: string; label: string }) {
   return (
     <div className="flex items-center gap-1 rounded px-2 bg-void-20 min-w-[2.2rem]">
-      <span className="font-mono text-annotation" style={{ color }}>{value}</span>
+      <span className="type-annotation font-mono" style={{ color }}>{value}</span>
       <span className="text-[0.65rem] text-void-50">{label}</span>
     </div>
   )

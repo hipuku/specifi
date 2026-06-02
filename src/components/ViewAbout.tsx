@@ -1,4 +1,7 @@
 import type { ReactNode } from 'react'
+import { Section } from '@kern/molecules/Section'
+import { BulletItem } from '@kern/atoms/BulletItem'
+import { InlineCode } from '@kern/atoms/InlineCode'
 
 export function ViewAbout() {
   return (
@@ -6,10 +9,10 @@ export function ViewAbout() {
 
       {/* ── Title + intro ── */}
       <div className="flex flex-col gap-3">
-        <h1 className="text-h4 font-semibold text-void-90">
+        <h1 className="type-h4 text-void-90">
           How CSS decides which style wins
         </h1>
-        <p className="text-p-sm text-void-60 leading-[1.7]">
+        <p className="type-p-sm text-void-60">
           When two rules target the same element, the browser uses a scoring algorithm called{' '}
           <a
             href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Specificity"
@@ -27,7 +30,7 @@ export function ViewAbout() {
       {/* ── How it works ── */}
       <Section title="How it works">
         <div className="rounded-xl px-6 py-4 flex items-center justify-center bg-void-20 border border-void-30">
-          <code className="font-mono text-code font-semibold tracking-[0.02em]">
+          <code className="type-code font-semibold">
             <span className="text-solstice">#app</span>
             {' '}
             <span className="text-orbit">.card:hover</span>
@@ -134,7 +137,7 @@ export function ViewAbout() {
 
       {/* ── Combinators ── */}
       <Section title="Combinators — no specificity contribution">
-        <p className="text-p-sm text-void-60 leading-[1.7]">
+        <p className="type-p-sm text-void-60">
           Combinators describe relationships between selectors. They never add to the score.
         </p>
         <ReferenceTable
@@ -150,7 +153,7 @@ export function ViewAbout() {
 
       {/* ── nth-child of S ── */}
       <Section title="nth-child with selector argument">
-        <p className="text-p-sm text-void-60 leading-[1.7]">
+        <p className="type-p-sm text-void-60">
           <C>:nth-child(An+B of S)</C> and <C>:nth-last-child(An+B of S)</C> score as{' '}
           <C>(0,1,0)</C> for the pseudo-class itself <em>plus</em> the max specificity of the
           selector argument <C>S</C>.
@@ -189,30 +192,8 @@ export function ViewAbout() {
 
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="flex flex-col gap-4">
-      <h2 className="text-h4 font-semibold text-void-90">{title}</h2>
-      {children}
-    </section>
-  )
-}
-
 function C({ children }: { children: ReactNode }) {
-  return (
-    <code className="font-mono text-code text-orbit bg-void-20 px-[5px] py-[1px] rounded-[4px]">
-      {children}
-    </code>
-  )
-}
-
-function BulletItem({ children }: { children: ReactNode }) {
-  return (
-    <li className="flex gap-3 items-start">
-      <span className="mt-[0.5em] w-[5px] h-[5px] rounded-full bg-void-40 shrink-0" />
-      <p className="text-p-sm text-void-60 leading-[1.7] m-0">{children}</p>
-    </li>
-  )
+  return <InlineCode color="text-orbit">{children}</InlineCode>
 }
 
 const AXIS_KEYS = ['a', 'b', 'c', '0'] as const
@@ -229,10 +210,10 @@ function ScoreBar({ axis, label, count, bg }: { axis: string; label: string; cou
   return (
     <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: bg }}>
       <div className="flex items-center gap-2">
-        <code className="font-mono text-code text-void-0">{axis}</code>
-        <code className="font-mono text-code text-void-0">{label}</code>
+        <code className="type-code text-void-0">{axis}</code>
+        <code className="type-code text-void-0">{label}</code>
       </div>
-      <code className="font-mono text-code text-void-0">{count}</code>
+      <code className="type-code text-void-0">{count}</code>
     </div>
   )
 }
@@ -247,9 +228,9 @@ function AxisCard({
 }) {
   return (
     <div className="flex flex-col gap-3 rounded-xl p-4 bg-void-20 border border-void-30">
-      <p className="text-p-base font-medium text-void-90 leading-snug m-0">{title}</p>
-      <p className="text-p-sm text-void-60 leading-[1.7] m-0">{children}</p>
-      <code className="font-mono text-code mt-auto" style={{ color: exampleColor }}>{examples}</code>
+      <p className="type-p-base text-void-90 m-0">{title}</p>
+      <p className="type-p-sm text-void-60 m-0">{children}</p>
+      <code className="type-code mt-auto" style={{ color: exampleColor }}>{examples}</code>
     </div>
   )
 }
@@ -260,7 +241,7 @@ function ReferenceTable({ columns, rows }: { columns: string[]; rows: string[][]
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-p-sm border-collapse">
+      <table className="w-full type-p-sm border-collapse">
         <thead>
           <tr>
             {columns.map(col => (
@@ -308,10 +289,10 @@ function InfoRow({ label, detail, note }: { label: string; detail: string; note:
   return (
     <div className="flex flex-col gap-2 rounded-lg px-4 py-4 bg-void-10 border border-void-20">
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-p-sm text-void-80">{label}</span>
-        <code className="font-mono text-code text-orbit">{detail}</code>
+        <span className="type-p-sm text-void-80">{label}</span>
+        <code className="type-code text-orbit">{detail}</code>
       </div>
-      <p className="text-p-sm text-void-60 leading-[1.7] m-0">{note}</p>
+      <p className="type-p-sm text-void-60 m-0">{note}</p>
     </div>
   )
 }

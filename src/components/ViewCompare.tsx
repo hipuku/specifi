@@ -25,8 +25,8 @@ export function ViewCompare() {
 
       {/* ── Title ── */}
       <div className="flex flex-col gap-1">
-        <h1 className="text-h4 font-semibold text-void-90">Compare two selectors</h1>
-        <p className="text-p-sm text-void-60">
+        <h1 className="type-h4 text-void-90">Compare two selectors</h1>
+        <p className="type-p-sm text-void-60">
           Enter two selectors to see which one wins and why.
         </p>
       </div>
@@ -85,7 +85,7 @@ function SelectorInput({
     <div className="flex flex-col gap-3">
       <label
         htmlFor={id}
-        className="text-annotation text-void-60 uppercase tracking-[0.08em]"
+        className="type-annotation-sc text-void-60"
       >
         {label}
       </label>
@@ -99,7 +99,7 @@ function SelectorInput({
         spellCheck={false}
         autoComplete="off"
         className={cn(
-          'font-mono text-code bg-void-10 rounded-[10px] px-4 py-3 w-full outline-none transition-colors duration-200 border',
+          'type-code bg-void-10 rounded-lg px-4 py-3 w-full outline-none transition-colors duration-200 border',
           hasError
             ? 'border-flare text-flare'
             : highlight === 'win'
@@ -111,7 +111,7 @@ function SelectorInput({
       />
 
       {hasError && (
-        <p className="text-annotation text-flare">{result?.error}</p>
+        <p className="type-annotation text-flare">{result?.error}</p>
       )}
 
       {result && !hasError && (
@@ -135,8 +135,8 @@ function SelectorInput({
 function MiniScore({ label, value, color }: { label: string; value: number; color: string }) {
   return (
     <div className="flex items-center gap-1 rounded-lg px-3 py-1 bg-void-20">
-      <span className="font-mono text-code" style={{ color }}>{value}</span>
-      <span className="text-annotation text-void-50">{label}</span>
+      <span className="type-code" style={{ color }}>{value}</span>
+      <span className="type-annotation text-void-50">{label}</span>
     </div>
   )
 }
@@ -145,7 +145,7 @@ function InlineToken({ token }: { token: DisplayToken }) {
   const style = TOKEN_STYLES[token.axis] ?? TOKEN_STYLES.unknown
   if (token.isCombinator) {
     return (
-      <span className="font-mono text-annotation px-[2px]" style={{ color: style.color }}>
+      <span className="type-annotation font-mono px-[2px]" style={{ color: style.color }}>
         {token.text}
       </span>
     )
@@ -153,7 +153,7 @@ function InlineToken({ token }: { token: DisplayToken }) {
   return (
     <code
       title={token.label}
-      className="font-mono text-annotation whitespace-nowrap rounded-[5px] px-1.5 py-0.5 border"
+      className="type-annotation font-mono whitespace-nowrap rounded-[5px] px-1.5 py-0.5 border"
       style={{ color: style.color, backgroundColor: style.bg, borderColor: style.border }}
     >
       {token.text}
@@ -173,7 +173,7 @@ function Verdict({
   if (winner === 'tie') {
     return (
       <div className="rounded-xl px-6 py-4 bg-void-20 border border-void-30">
-        <p className="text-p-sm text-void-60">
+        <p className="type-p-sm text-void-60">
           Both selectors have equal specificity{' '}
           <code className="font-mono text-void-80">
             {resultA ? formatSpecificity(resultA.specificity) : ''}
@@ -190,10 +190,10 @@ function Verdict({
 
   return (
     <div className="rounded-xl px-6 py-4 flex flex-col gap-1 bg-void-20 border border-void-30">
-      <p className="text-annotation text-supernova uppercase tracking-[0.08em]">
+      <p className="type-annotation-sc text-supernova">
         {winLabel} wins
       </p>
-      <p className="text-p-sm text-void-60">
+      <p className="type-p-sm text-void-60">
         <code className="font-mono text-void-80">
           {winResult ? formatSpecificity(winResult.specificity) : ''}
         </code>

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@source "../../kern/src";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -9,19 +10,21 @@
   --font-sans:       'Parkinsans', system-ui, sans-serif;
   --font-mono:       'Geist Mono', 'Fira Code', monospace;
 
-  /* ─── Type scale (from hipuku-web primitives) ────────────────────────────── */
-  --text-display:    clamp(3.5rem, 7vw + 1rem, 7.125rem);
-  --text-h1:         clamp(2.625rem, 5vw + 0.75rem, 5.1875rem);
-  --text-h2:         clamp(2rem, 3.5vw + 0.5rem, 3.75rem);
-  --text-h3:         clamp(1.5rem, 2.5vw + 0.25rem, 2.5rem);
-  --text-h4:         clamp(1.25rem, 1.5vw + 0.25rem, 1.75rem);
-  --text-h5:         clamp(1.125rem, 1vw + 0.25rem, 1.375rem);
-  --text-h6:         1.125rem;
-  --text-p-lg:       1.375rem;
-  --text-p-base:     1.125rem;
-  --text-p-sm:       1rem;
-  --text-annotation: 0.8125rem;
-  --text-code:       0.9375rem;
+  /* ─── Type scale sizes (from hipuku-web primitives) ─────────────────────── */
+  --text-display:       clamp(3.5rem, 7vw + 1rem, 7.125rem);
+  --text-h1:            clamp(2.625rem, 5vw + 0.75rem, 5.1875rem);
+  --text-h2:            clamp(2rem, 3.5vw + 0.5rem, 3.75rem);
+  --text-h3:            clamp(1.5rem, 2.5vw + 0.25rem, 2.5rem);
+  --text-h4:            clamp(1.25rem, 1.5vw + 0.25rem, 1.75rem);
+  --text-h5:            clamp(1.125rem, 1vw + 0.25rem, 1.375rem);
+  --text-h6:            1.125rem;
+  --text-p-lg:          1.375rem;
+  --text-p-base:        1.125rem;
+  --text-p-sm:          1rem;
+  --text-annotation:    0.8125rem;
+  --text-annotation-sc: 1rem;
+  --text-button:        1rem;
+  --text-code:          0.9375rem;
 
   /* ─── Spacing (4px base, from hipuku-web primitives) ────────────────────── */
   --space-1:  0.25rem;
@@ -139,6 +142,24 @@
   --radius-xl:  calc(var(--radius) * 1.4);
 }
 
+/* ─── Type axis tokens (weight · line-height · tracking per style) ──────── */
+:root {
+  --text-display-weight: 800;   --text-display-lh: 0.95;   --text-display-tracking: -0.03em;
+  --text-h1-weight:      100;   --text-h1-lh:      1.05;   --text-h1-tracking:      -0.025em;
+  --text-h2-weight:      100;   --text-h2-lh:      1.1;    --text-h2-tracking:      -0.02em;
+  --text-h3-weight:      600;   --text-h3-lh:      1.2;    --text-h3-tracking:      -0.015em;
+  --text-h4-weight:      600;   --text-h4-lh:      1.3;    --text-h4-tracking:      -0.01em;
+  --text-h5-weight:      500;   --text-h5-lh:      1.4;    --text-h5-tracking:      -0.005em;
+  --text-h6-weight:      500;   --text-h6-lh:      1.5;    --text-h6-tracking:      0em;
+  --text-p-lg-weight:    400;   --text-p-lg-lh:    1.1;    --text-p-lg-tracking:    0em;
+  --text-p-base-weight:  400;   --text-p-base-lh:  1.15;   --text-p-base-tracking:  0em;
+  --text-p-sm-weight:    400;   --text-p-sm-lh:    1.7;    --text-p-sm-tracking:    0.01em;
+  --text-annotation-weight:      400;  --text-annotation-lh:      1.7;  --text-annotation-tracking:      0.01em;
+  --text-annotation-sc-weight:   400;  --text-annotation-sc-lh:   1.5;  --text-annotation-sc-tracking:   0.08em;
+  --text-button-weight:  600;   --text-button-lh:  1.0;    --text-button-tracking:  0.02em;
+  --text-code-weight:    400;   --text-code-lh:    1.7;    --text-code-tracking:    0em;
+}
+
 /* ─── Dark theme — default (matches Figma) ───────────────────────────────── */
 :root, .dark {
   --background:                  var(--color-void-0);
@@ -179,9 +200,73 @@
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
     font-size: var(--text-p-sm);
-    line-height: 1.6;
+    font-weight: var(--text-p-sm-weight);
+    line-height: var(--text-p-sm-lh);
+    letter-spacing: var(--text-p-sm-tracking);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ─── Composite type classes ─────────────────────────────────────────────── */
+@layer components {
+  .type-display {
+    font-size: var(--text-display); font-weight: var(--text-display-weight);
+    line-height: var(--text-display-lh); letter-spacing: var(--text-display-tracking);
+  }
+  .type-h1 {
+    font-size: var(--text-h1); font-weight: var(--text-h1-weight);
+    line-height: var(--text-h1-lh); letter-spacing: var(--text-h1-tracking);
+  }
+  .type-h2 {
+    font-size: var(--text-h2); font-weight: var(--text-h2-weight);
+    line-height: var(--text-h2-lh); letter-spacing: var(--text-h2-tracking);
+  }
+  .type-h3 {
+    font-size: var(--text-h3); font-weight: var(--text-h3-weight);
+    line-height: var(--text-h3-lh); letter-spacing: var(--text-h3-tracking);
+  }
+  .type-h4 {
+    font-size: var(--text-h4); font-weight: var(--text-h4-weight);
+    line-height: var(--text-h4-lh); letter-spacing: var(--text-h4-tracking);
+  }
+  .type-h5 {
+    font-size: var(--text-h5); font-weight: var(--text-h5-weight);
+    line-height: var(--text-h5-lh); letter-spacing: var(--text-h5-tracking);
+  }
+  .type-h6 {
+    font-size: var(--text-h6); font-weight: var(--text-h6-weight);
+    line-height: var(--text-h6-lh); letter-spacing: var(--text-h6-tracking);
+  }
+  .type-p-lg {
+    font-size: var(--text-p-lg); font-weight: var(--text-p-lg-weight);
+    line-height: var(--text-p-lg-lh); letter-spacing: var(--text-p-lg-tracking);
+  }
+  .type-p-base {
+    font-size: var(--text-p-base); font-weight: var(--text-p-base-weight);
+    line-height: var(--text-p-base-lh); letter-spacing: var(--text-p-base-tracking);
+  }
+  .type-p-sm {
+    font-size: var(--text-p-sm); font-weight: var(--text-p-sm-weight);
+    line-height: var(--text-p-sm-lh); letter-spacing: var(--text-p-sm-tracking);
+  }
+  .type-annotation {
+    font-size: var(--text-annotation); font-weight: var(--text-annotation-weight);
+    line-height: var(--text-annotation-lh); letter-spacing: var(--text-annotation-tracking);
+  }
+  .type-annotation-sc {
+    font-size: var(--text-annotation-sc); font-weight: var(--text-annotation-sc-weight);
+    line-height: var(--text-annotation-sc-lh); letter-spacing: var(--text-annotation-sc-tracking);
+    font-variant-caps: all-small-caps;
+  }
+  .type-button {
+    font-size: var(--text-button); font-weight: var(--text-button-weight);
+    line-height: var(--text-button-lh); letter-spacing: var(--text-button-tracking);
+  }
+  .type-code {
+    font-size: var(--text-code); font-weight: var(--text-code-weight);
+    line-height: var(--text-code-lh); letter-spacing: var(--text-code-tracking);
+    font-family: var(--font-mono);
   }
 }
 
