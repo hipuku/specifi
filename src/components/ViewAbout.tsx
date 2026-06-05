@@ -220,7 +220,7 @@ function AxisCard({
 }) {
   return (
     <div className="flex flex-col gap-3 rounded-xl p-4 bg-void-20 border border-void-30">
-      <p className="type-p-sm text-void-90">{title}</p>
+      <p className="type-h6 text-void-70">{title}</p>
       <p className="type-annotation text-void-60 m-0">{children}</p>
       <div className="mt-auto">
         <InlineCode color={exampleColor} className="bg-void-30 whitespace-nowrap">{examples}</InlineCode>
