@@ -2,6 +2,8 @@ import type { ReactNode } from 'react'
 import { Section } from '@kern/molecules/Section'
 import { BulletItem } from '@kern/atoms/BulletItem'
 import { InlineCode } from '@kern/atoms/InlineCode'
+import { ExternalLink } from '@kern/atoms/ExternalLink'
+import { DataTable } from '@kern/molecules/DataTable'
 
 export function ViewAbout() {
   return (
@@ -14,14 +16,9 @@ export function ViewAbout() {
         </h1>
         <p className="type-p-sm text-void-60">
           When two rules target the same element, the browser uses a scoring algorithm called{' '}
-          <a
-            href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Specificity"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-solstice underline underline-offset-[3px]"
-          >
+          <ExternalLink href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Specificity">
             specificity
-          </a>{' '}
+          </ExternalLink>{' '}
           to decide which one takes effect. Defined in the CSS Selectors spec, it is a three part
           score <C>(a, b, c)</C> — IDs, classes and elements — compared left to right.
         </p>
@@ -30,8 +27,8 @@ export function ViewAbout() {
       {/* ── How it works ── */}
       <Section title="How it works">
         <div className="rounded-xl px-6 py-4 flex items-center justify-center bg-void-20 border border-void-30">
-          <code className="type-code font-semibold">
-            <span className="text-solstice">#app</span>
+          <code className="type-code text-void-70">
+            <span className="text-(--primary)">#app</span>
             {' '}
             <span className="text-orbit">.card:hover</span>
             {' '}
@@ -46,29 +43,29 @@ export function ViewAbout() {
         </div>
 
         <div className="grid grid-cols-3 gap-3">
-          <AxisCard title="ID selectors" examples="#header  #nav" exampleColor="var(--color-solstice)">
-            Each <span className="font-mono text-solstice">#id</span> adds
+          <AxisCard title="ID selectors" examples="#header #nav" exampleColor="text-solstice">
+            Each <InlineCode color="text-solstice" className="bg-void-30">#id</InlineCode> adds
             to the first column. Even a single ID outweighs any number of classes.
           </AxisCard>
           <AxisCard
             title="Classes, attributes, pseudo-classes"
-            examples=".btn,  :focus,  [type]"
-            exampleColor="var(--color-orbit)"
+            examples=".btn, :focus, [type]"
+            exampleColor="text-orbit"
           >
-            Each <span className="font-mono text-orbit">.class</span>,{' '}
-            <span className="font-mono text-orbit">[attr]</span>, or{' '}
-            <span className="font-mono text-orbit">:hover</span> adds
+            Each <InlineCode color="text-orbit" className="bg-void-30">.class</InlineCode>,{' '}
+            <InlineCode color="text-orbit" className="bg-void-30">[attr]</InlineCode>, or{' '}
+            <InlineCode color="text-orbit" className="bg-void-30">:hover</InlineCode> adds
             1 to the second column.
           </AxisCard>
           <AxisCard
             title="Type selectors & pseudo-elements"
-            examples="div,  span,  ::after"
-            exampleColor="var(--color-supernova)"
+            examples="div, span, ::after"
+            exampleColor="text-supernova"
           >
             Each element tag like{' '}
-            <span className="font-mono text-supernova">p</span>,{' '}
-            <span className="font-mono text-supernova">h1</span>, or{' '}
-            <span className="font-mono text-supernova">::before</span> adds
+            <InlineCode color="text-supernova" className="bg-void-30">p</InlineCode>,{' '}
+            <InlineCode color="text-supernova" className="bg-void-30">h1</InlineCode>, or{' '}
+            <InlineCode color="text-supernova" className="bg-void-30">::before</InlineCode> adds
             1 to the third column.
           </AxisCard>
         </div>
@@ -110,7 +107,7 @@ export function ViewAbout() {
 
       {/* ── Selector types table ── */}
       <Section title="Selector types">
-        <ReferenceTable
+        <DataTable
           columns={['Pattern', 'Type', 'Axis', 'Example']}
           rows={[
             ['#name',        'ID selector',           'a', '#header'],
@@ -131,7 +128,12 @@ export function ViewAbout() {
             ['custom-el',    'Custom element',        'c', 'my-button'],
             ['::pseudo',     'Pseudo-element',        'c', '::before'],
             ['*',            'Universal selector',    '0', '* { }'],
-          ]}
+          ].map(([pattern, type, axis, example]) => [
+            <span className="font-mono text-orbit">{pattern}</span>,
+            type,
+            <span className="font-mono" style={{ color: AXIS_TEXT[axis] ?? 'inherit' }}>{axis}</span>,
+            <span className="font-mono text-orbit">{example}</span>,
+          ])}
         />
       </Section>
 
@@ -140,14 +142,18 @@ export function ViewAbout() {
         <p className="type-p-sm text-void-60">
           Combinators describe relationships between selectors. They never add to the score.
         </p>
-        <ReferenceTable
+        <DataTable
           columns={['Symbol', 'Name', 'Meaning']}
           rows={[
             ['(space)', 'Descendant',       'Any depth inside'],
             ['>',       'Child',            'Direct child only'],
             ['+',       'Adjacent',         'Immediately after'],
             ['~',       'General sibling',  'Any sibling after'],
-          ]}
+          ].map(([symbol, name, meaning]) => [
+            <span className="font-mono text-orbit">{symbol}</span>,
+            name,
+            meaning,
+          ])}
         />
       </Section>
 
@@ -162,28 +168,15 @@ export function ViewAbout() {
 
       {/* ── Outside the algorithm ── */}
       <Section title="Outside the algorithm">
-        <div className="flex flex-col gap-3">
-          <InfoRow
-            label="Inline styles"
-            detail='style="color: red"'
-            note="Beats any selector — treated as (1,0,0,0), a fourth column above IDs."
-          />
-          <InfoRow
-            label="!important"
-            detail="color: red !important"
-            note="Creates a separate override layer that wins over all non-important rules regardless of specificity."
-          />
-          <InfoRow
-            label=":is() / :not() / :has()"
-            detail=":is(#id, .class)"
-            note="Take the specificity of their most specific argument — not their own name."
-          />
-          <InfoRow
-            label=":where()"
-            detail=":where(#id, .class)"
-            note="Always contributes zero specificity, no matter what's inside."
-          />
-        </div>
+        <DataTable
+          columns={['Feature', 'Example', 'Note']}
+          rows={[
+            [<span className="whitespace-nowrap">Inline styles</span>,           <span className="font-mono text-orbit whitespace-nowrap">{'style="color: red"'}</span>,  'Beats any selector — treated as (1,0,0,0), a fourth column above IDs.'],
+            [<span className="whitespace-nowrap">!important</span>,              <span className="font-mono text-orbit whitespace-nowrap">color: red !important</span>,   'Creates a separate override layer that wins over all non-important rules regardless of specificity.'],
+            [<span className="whitespace-nowrap">:is() / :not() / :has()</span>, <span className="font-mono text-orbit whitespace-nowrap">:is(#id, .class)</span>,       'Take the specificity of their most specific argument — not their own name.'],
+            [<span className="whitespace-nowrap">:where()</span>,                <span className="font-mono text-orbit whitespace-nowrap">:where(#id, .class)</span>,    "Always contributes zero specificity, no matter what's inside."],
+          ]}
+        />
       </Section>
 
     </div>
@@ -196,10 +189,7 @@ function C({ children }: { children: ReactNode }) {
   return <InlineCode color="text-orbit">{children}</InlineCode>
 }
 
-const AXIS_KEYS = ['a', 'b', 'c', '0'] as const
-type AxisKey = typeof AXIS_KEYS[number]
-
-const AXIS_TEXT: Record<AxisKey, string> = {
+const AXIS_TEXT: Record<string, string> = {
   a:   'var(--color-solstice)',
   b:   'var(--color-orbit)',
   c:   'var(--color-supernova)',
@@ -218,81 +208,24 @@ function ScoreBar({ axis, label, count, bg }: { axis: string; label: string; cou
   )
 }
 
+type AxisColor = 'text-solstice' | 'text-orbit' | 'text-supernova'
+
 function AxisCard({
   title, children, examples, exampleColor,
 }: {
   title: string
   children: ReactNode
   examples: string
-  exampleColor: string
+  exampleColor: AxisColor
 }) {
   return (
     <div className="flex flex-col gap-3 rounded-xl p-4 bg-void-20 border border-void-30">
-      <p className="type-p-base text-void-90 m-0">{title}</p>
-      <p className="type-p-sm text-void-60 m-0">{children}</p>
-      <code className="type-code mt-auto" style={{ color: exampleColor }}>{examples}</code>
-    </div>
-  )
-}
-
-function ReferenceTable({ columns, rows }: { columns: string[]; rows: string[][] }) {
-  const isAxisKey = (val: string): val is AxisKey => (AXIS_KEYS as readonly string[]).includes(val)
-  const axisColor = (val: string) => isAxisKey(val) ? AXIS_TEXT[val] : 'inherit'
-
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full type-p-sm border-collapse">
-        <thead>
-          <tr>
-            {columns.map(col => (
-              <th
-                key={col}
-                className="text-left px-3 py-2 text-void-50 whitespace-nowrap border-b border-void-20"
-              >
-                {col}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={`${row[0]}-${i}`} className="border-b border-void-20">
-              {row.map((cell, j) => {
-                const isAxis = columns[j] === 'Axis'
-                const isCode = columns[j] === 'Pattern' || columns[j] === 'Symbol' || columns[j] === 'Example'
-                return (
-                  <td
-                    key={j}
-                    className={`px-3 py-[10px] whitespace-nowrap ${isCode ? 'font-mono' : ''}`}
-                    style={{
-                      color: isAxis
-                        ? axisColor(cell)
-                        : isCode
-                          ? 'var(--color-orbit)'
-                          : 'var(--color-void-60)',
-                      fontFamily: isAxis ? 'var(--font-mono)' : undefined,
-                    }}
-                  >
-                    {cell}
-                  </td>
-                )
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-function InfoRow({ label, detail, note }: { label: string; detail: string; note: string }) {
-  return (
-    <div className="flex flex-col gap-2 rounded-lg px-4 py-4 bg-void-10 border border-void-20">
-      <div className="flex items-center gap-3 flex-wrap">
-        <span className="type-p-sm text-void-80">{label}</span>
-        <code className="type-code text-orbit">{detail}</code>
+      <p className="type-p-sm text-void-90">{title}</p>
+      <p className="type-annotation text-void-60 m-0">{children}</p>
+      <div className="mt-auto">
+        <InlineCode color={exampleColor} className="bg-void-30 whitespace-nowrap">{examples}</InlineCode>
       </div>
-      <p className="type-p-sm text-void-60 m-0">{note}</p>
     </div>
   )
 }
+

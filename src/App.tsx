@@ -17,8 +17,8 @@ const NAV_ITEMS = [
 ]
 
 const SOCIAL_LINKS = [
-  { Icon: Globe,      label: 'specifi website' },
-  { Icon: GitHubIcon, label: 'GitHub'           },
+  { Icon: Globe,      label: 'specifi website', href: 'https://www.hipuku.dev'                                             },
+  { Icon: GitHubIcon, label: 'GitHub',           href: 'https://github.com/hipuku/specifi' },
 ]
 
 const LOGO_FILLS = {
@@ -29,6 +29,7 @@ const LOGO_FILLS = {
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewId>('about')
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground">
@@ -39,6 +40,8 @@ export default function App() {
         onNavigate={(id) => setActiveView(id as ViewId)}
         accentActiveClass="text-solstice"
         socialLinks={SOCIAL_LINKS}
+        mobileOpen={mobileOpen}
+        onMobileToggle={() => setMobileOpen(o => !o)}
         colophon={
           <div className="flex items-center gap-2">
             <span>2026 © specifi by</span>
@@ -47,7 +50,7 @@ export default function App() {
         }
       />
 
-      <main className="flex-1 overflow-y-auto p-10">
+      <main className="flex-1 h-full overflow-y-auto p-10">
         {activeView === 'about'   && <ViewAbout />}
         {activeView === 'analyse' && <ViewAnalyse />}
         {activeView === 'compare' && <ViewCompare />}

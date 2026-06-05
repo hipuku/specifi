@@ -22,6 +22,13 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Authenticate private packages
+        run: |
+          git config --local --unset-all http.https://github.com/.extraheader || true
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "ssh://git@github.com/"
+
       - name: Install dependencies
         run: npm ci
 
@@ -47,6 +54,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
+
+      - name: Authenticate private packages
+        run: |
+          git config --local --unset-all http.https://github.com/.extraheader || true
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "ssh://git@github.com/"
 
       - name: Install dependencies
         run: npm ci

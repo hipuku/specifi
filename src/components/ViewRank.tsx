@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react'
 import { analyse, compareSpecificity, formatSpecificity, extractSelectors } from '@/parser/specificity'
 import { AXIS_COLORS } from './tokenStyles'
 import { cn } from '@/lib/utils'
+import { ViewHeader } from '@kern/molecules/ViewHeader'
+import { InlineCode } from '@kern/atoms/InlineCode'
 
 interface RankedEntry {
   selector: string
@@ -52,22 +54,23 @@ export function ViewRank() {
   return (
     <div className="flex flex-col gap-8 max-w-3xl mx-auto w-full">
 
-      {/* ── Title ── */}
-      <div className="flex flex-col gap-1">
-        <h1 className="type-h4 text-void-90">Rank a stylesheet</h1>
-        <p className="type-p-sm text-void-60">
-          Paste any CSS below. All selectors are extracted, deduplicated, and sorted by specificity.
-        </p>
-      </div>
+      <ViewHeader
+        title="Rank a stylesheet"
+        description="Paste any CSS below. All selectors are extracted, deduplicated, and sorted by specificity."
+      />
 
       {/* ── Textarea ── */}
       <div className="flex flex-col gap-2">
-        <label
-          htmlFor="css-input"
-          className="type-annotation-sc text-void-60"
-        >
-          CSS
-        </label>
+        <div className="flex items-baseline justify-between">
+          <label htmlFor="css-input" className="type-annotation-sc text-void-60">
+            CSS
+          </label>
+          {ranked.length > 0 && (
+            <span className="type-annotation text-void-50">
+              {ranked.length} selector{ranked.length !== 1 ? 's' : ''}, ranked highest first
+            </span>
+          )}
+        </div>
         <textarea
           id="css-input"
           value={input}
@@ -75,29 +78,23 @@ export function ViewRank() {
           rows={10}
           placeholder={PLACEHOLDER}
           spellCheck={false}
-          className="type-annotation font-mono text-void-80 bg-void-10 rounded-lg px-4 py-3 w-full outline-none resize-y transition-colors duration-150 border border-void-20 focus:border-void-40"
+          className="type-code w-full bg-void-10 border border-void-20 focus:border-void-40 rounded-xl px-4 py-3 text-void-90 placeholder:text-void-40 outline-none resize-y transition-colors duration-150"
         />
       </div>
 
       {/* ── Results ── */}
       {hasInput && ranked.length === 0 && (
-        <p className="type-p-sm text-void-50">
+        <p className="type-p-sm text-void-60">
           No selectors found. Make sure your CSS contains rules like{' '}
-          <code className="type-code text-orbit">.class {'{ }'}</code>.
+          <InlineCode color="text-orbit">.class {'{ }'}</InlineCode>.
         </p>
       )}
 
       {ranked.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <p className="type-annotation-sc text-void-50">
-            {ranked.length} selector{ranked.length !== 1 ? 's' : ''} — ranked highest first
-          </p>
-
-          <div className="rounded-xl overflow-hidden border border-void-20">
-            {ranked.map((entry, i) => (
-              <RankRow key={`${entry.selector}-${i}`} entry={entry} rank={i + 1} total={ranked.length} />
-            ))}
-          </div>
+        <div className="rounded-xl overflow-hidden border border-void-20">
+          {ranked.map((entry, i) => (
+            <RankRow key={entry.selector} entry={entry} rank={i + 1} total={ranked.length} />
+          ))}
         </div>
       )}
     </div>
@@ -113,33 +110,32 @@ function RankRow({ entry, rank, total }: { entry: RankedEntry; rank: number; tot
   return (
     <div
       className={cn(
-        'flex items-center gap-4 px-4 py-3 transition-colors duration-150',
+        'flex items-center gap-4 px-4 py-3',
         !isLast && 'border-b border-void-20',
-        rank === 1 ? 'bg-void-20' : 'bg-void-10 hover:bg-void-20',
       )}
     >
       <span
         className={cn(
-          'type-annotation font-mono min-w-8 text-right',
+          'type-annotation font-mono shrink-0',
           rank === 1 ? 'text-supernova' : 'text-void-40',
         )}
       >
         {rank}
       </span>
 
-      <code
-        className={cn('flex-1 truncate type-annotation font-mono', entry.error ? 'text-flare' : 'text-void-80')}
+      <span
+        className={cn('flex-1 min-w-0 truncate type-annotation font-mono', entry.error ? 'text-flare' : 'text-void-60')}
         title={entry.selector}
       >
         {entry.selector}
-      </code>
+      </span>
 
       {!entry.error && (
         <div className="flex items-center gap-2 shrink-0">
           <SpecChip value={entry.a} color={AXIS_COLORS.a} label="a" />
           <SpecChip value={entry.b} color={AXIS_COLORS.b} label="b" />
           <SpecChip value={entry.c} color={AXIS_COLORS.c} label="c" />
-          <span className="type-annotation font-mono text-void-50 min-w-[72px] text-right">
+          <span className="type-annotation font-mono text-void-60 min-w-[72px] text-right">
             {spec}
           </span>
         </div>
@@ -149,7 +145,7 @@ function RankRow({ entry, rank, total }: { entry: RankedEntry; rank: number; tot
         <span className="type-annotation text-flare">parse error</span>
       )}
 
-      <span className="type-annotation font-mono text-void-40 min-w-[3rem] text-right">
+      <span className="type-annotation font-mono text-void-50 min-w-[3rem] text-right">
         :{entry.line}
       </span>
     </div>
@@ -158,9 +154,9 @@ function RankRow({ entry, rank, total }: { entry: RankedEntry; rank: number; tot
 
 function SpecChip({ value, color, label }: { value: number; color: string; label: string }) {
   return (
-    <div className="flex items-center gap-1 rounded px-2 bg-void-20 min-w-[2.2rem]">
+    <div className="flex items-center gap-1 min-w-[2.2rem]">
       <span className="type-annotation font-mono" style={{ color }}>{value}</span>
-      <span className="text-[0.65rem] text-void-50">{label}</span>
+      <span className="type-annotation text-void-50">{label}</span>
     </div>
   )
 }

@@ -128,6 +128,11 @@ export function formatSpecificity(s: Specificity): string {
 
 const MAX_CSS_BYTES = 500_000 // 500 KB
 
+// Replace comment content with spaces, preserving newlines so line numbers stay accurate
+function stripBlockComments(css: string): string {
+  return css.replace(/\/\*[\s\S]*?\*\//g, match => match.replace(/[^\n]/g, ' '))
+}
+
 // Extract all selectors from a CSS string for stylesheet mode
 export function extractSelectors(css: string): Array<{ selector: string; line: number }> {
   if (css.length > MAX_CSS_BYTES) {
@@ -135,7 +140,7 @@ export function extractSelectors(css: string): Array<{ selector: string; line: n
   }
 
   const results: Array<{ selector: string; line: number }> = []
-  const lines = css.split('\n')
+  const lines = stripBlockComments(css).split('\n')
   let depth = 0
   let skipUntilDepth = -1
 

@@ -1,27 +1,24 @@
 # specifi
 
-A CSS specificity visualiser built with a hand-written CSS Selectors Level 4 parser — no external parsing dependencies.
+CSS specificity visualiser in the browser. Live at [specifi.hipuku.dev](https://specifi.hipuku.dev).
 
 ## Tools
 
-**Analyse** — Enter any CSS selector to see its (a, b, c) specificity score and a tree breakdown of each compound selector, combinator, and simple selector type.
+**Analyse** — parse any selector and see its three-axis score (a, b, c) with a full token-by-token breakdown of every ID, class, attribute, pseudo-class, and element.
 
-**Compare** — Enter two selectors side by side to see which wins and why.
+**Compare** — enter two selectors side by side; the tool computes which wins and why, with inline token visualisation for each.
 
-**Rank** — Paste a stylesheet and get every selector extracted, deduplicated, and sorted from most to least specific.
+**Rank** — paste any stylesheet; all selectors are extracted, deduplicated, and sorted highest-to-lowest by specificity.
 
 ## Parser
 
-The core is a from-scratch tokeniser → recursive descent parser → specificity calculator written in TypeScript. It handles the full CSS Selectors Level 4 surface area including `:not()`, `:is()`, `:has()`, `:where()`, `:nth-child(An+B of S)`, attribute operators, pseudo-elements, combinators, and selector lists.
+The core is a from-scratch tokeniser → recursive descent parser → specificity calculator in TypeScript. It handles the full CSS Selectors Level 4 surface area: `:not()`, `:is()`, `:has()`, `:where()`, `:nth-child(An+B of S)`, attribute operators, pseudo-elements, combinators, and selector lists.
 
 ## Stack
 
 - React 19 + TypeScript
-- Vite
-- Tailwind CSS v4
-- shadcn/ui (base token layer only)
-- Base UI (headless components)
-- Parkinsans + Geist Mono
+- Vite, Tailwind CSS v4, Base UI (headless form primitives)
+- Parkinsans + Geist Mono (Google Fonts)
 
 ## Development
 
@@ -29,3 +26,5 @@ The core is a from-scratch tokeniser → recursive descent parser → specificit
 npm install
 npm run dev
 ```
+
+See [DECISIONS.md](DECISIONS.md) for engineering rationale.
