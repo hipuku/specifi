@@ -1,8 +1,8 @@
 import { useState }      from 'react'
-import { Info, Search, GitCompare, ListChecks, Globe } from 'lucide-react'
+import { Info, Search, GitCompare, ListChecks } from 'lucide-react'
 import { AppSidebar }    from '@kern/organisms/AppSidebar'
-import { HipukuLogo }    from '@kern/organisms/HipukuLogo'
-import { GitHubIcon }    from '@kern/atoms/GitHubIcon'
+import { HipukuLogo }    from '@kern/atoms/HipukuLogo'
+import { SocialBar }     from '@kern/molecules/SocialBar'
 import { ViewAbout }     from '@/components/ViewAbout'
 import { ViewAnalyse }   from '@/components/ViewAnalyse'
 import { ViewCompare }   from '@/components/ViewCompare'
@@ -14,11 +14,6 @@ const NAV_ITEMS = [
   { id: 'analyse', label: 'Analyse a selector',     icon: Search     },
   { id: 'compare', label: 'Compare two selectors',  icon: GitCompare },
   { id: 'rank',    label: 'Rank a stylesheet',       icon: ListChecks },
-]
-
-const SOCIAL_LINKS = [
-  { Icon: Globe,      label: 'specifi website', href: 'https://www.hipuku.dev'                                             },
-  { Icon: GitHubIcon, label: 'GitHub',           href: 'https://github.com/hipuku/specifi' },
 ]
 
 const LOGO_FILLS = {
@@ -39,7 +34,7 @@ export default function App() {
         activeId={activeView}
         onNavigate={(id) => setActiveView(id as ViewId)}
         accentActiveClass="text-solstice"
-        socialLinks={SOCIAL_LINKS}
+        social={<SocialBar siteName="specifi" githubUrl="https://github.com/hipuku/specifi" />}
         mobileOpen={mobileOpen}
         onMobileToggle={() => setMobileOpen(o => !o)}
         colophon={
