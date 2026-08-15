@@ -86,7 +86,7 @@ export function ViewRank() {
       {hasInput && ranked.length === 0 && (
         <p className="type-p-sm text-void-60">
           No selectors found. Make sure your CSS contains rules like{' '}
-          <InlineCode color="text-orbit">.class {'{ }'}</InlineCode>.
+          <InlineCode colour="text-orbit">.class {'{ }'}</InlineCode>.
         </p>
       )}
 

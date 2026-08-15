@@ -44,7 +44,7 @@ export function ViewAbout() {
 
         <div className="grid grid-cols-3 gap-3">
           <AxisCard title="ID selectors" examples="#header #nav" exampleColor="text-solstice">
-            Each <InlineCode color="text-solstice" className="bg-void-30">#id</InlineCode> adds
+            Each <InlineCode colour="text-solstice" className="bg-void-30">#id</InlineCode> adds
             to the first column. Even a single ID outweighs any number of classes.
           </AxisCard>
           <AxisCard
@@ -52,9 +52,9 @@ export function ViewAbout() {
             examples=".btn, :focus, [type]"
             exampleColor="text-orbit"
           >
-            Each <InlineCode color="text-orbit" className="bg-void-30">.class</InlineCode>,{' '}
-            <InlineCode color="text-orbit" className="bg-void-30">[attr]</InlineCode>, or{' '}
-            <InlineCode color="text-orbit" className="bg-void-30">:hover</InlineCode> adds
+            Each <InlineCode colour="text-orbit" className="bg-void-30">.class</InlineCode>,{' '}
+            <InlineCode colour="text-orbit" className="bg-void-30">[attr]</InlineCode>, or{' '}
+            <InlineCode colour="text-orbit" className="bg-void-30">:hover</InlineCode> adds
             1 to the second column.
           </AxisCard>
           <AxisCard
@@ -63,9 +63,9 @@ export function ViewAbout() {
             exampleColor="text-supernova"
           >
             Each element tag like{' '}
-            <InlineCode color="text-supernova" className="bg-void-30">p</InlineCode>,{' '}
-            <InlineCode color="text-supernova" className="bg-void-30">h1</InlineCode>, or{' '}
-            <InlineCode color="text-supernova" className="bg-void-30">::before</InlineCode> adds
+            <InlineCode colour="text-supernova" className="bg-void-30">p</InlineCode>,{' '}
+            <InlineCode colour="text-supernova" className="bg-void-30">h1</InlineCode>, or{' '}
+            <InlineCode colour="text-supernova" className="bg-void-30">::before</InlineCode> adds
             1 to the third column.
           </AxisCard>
         </div>
@@ -186,7 +186,7 @@ export function ViewAbout() {
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
 function C({ children }: { children: ReactNode }) {
-  return <InlineCode color="text-orbit">{children}</InlineCode>
+  return <InlineCode colour="text-orbit">{children}</InlineCode>
 }
 
 const AXIS_TEXT: Record<string, string> = {
@@ -223,7 +223,7 @@ function AxisCard({
       <p className="type-annotation-sc text-void-60">{title}</p>
       <p className="type-annotation text-void-60 m-0">{children}</p>
       <div className="mt-auto">
-        <InlineCode color={exampleColor} className="bg-void-30 whitespace-nowrap">{examples}</InlineCode>
+        <InlineCode colour={exampleColor} className="bg-void-30 whitespace-nowrap">{examples}</InlineCode>
       </div>
     </div>
   )

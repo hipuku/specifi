@@ -172,7 +172,7 @@ function Verdict({
     return (
       <CalloutCard colour="neutral">
         Both selectors have equal specificity{' '}
-        <InlineCode color="text-void-80" className="bg-void-30">
+        <InlineCode colour="text-void-80" className="bg-void-30">
           {resultA ? formatSpecificity(resultA.specificity) : ''}
         </InlineCode>
         . Source order decides.
@@ -190,7 +190,7 @@ function Verdict({
         {winResult ? formatSpecificity(winResult.specificity) : ''}
       </InlineCode>
       {' > '}
-      <InlineCode color="text-void-60" className="bg-void-30">
+      <InlineCode colour="text-void-60" className="bg-void-30">
         {loseResult ? formatSpecificity(loseResult.specificity) : ''}
       </InlineCode>
     </CalloutCard>
