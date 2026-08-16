@@ -17,7 +17,7 @@ The core is a from-scratch tokeniser → recursive descent parser → specificit
 ## Stack
 
 - React 19 + TypeScript
-- Vite, Tailwind CSS v4, Base UI (headless form primitives)
+- Vite, Tailwind CSS v4, [kern](https://github.com/hipuku/kern) (shared component library), Base UI (headless form primitives)
 - Parkinsans + Geist Mono (Google Fonts)
 
 ## Development
