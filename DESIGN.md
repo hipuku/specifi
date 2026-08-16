@@ -1,4 +1,4 @@
-# specifi decisions
+# specifi — design notes
 
 Annotated intent. What this tool does and why each significant decision was made. Not a spec — engineering notes for a new contributor or future self. If something in the code looks over-engineered or under-engineered, the answer is probably here.
 
