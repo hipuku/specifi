@@ -1,13 +1,16 @@
 import type { ReactNode } from 'react'
+import { ViewContainer } from '@kern/templates/ViewContainer'
 import { Section } from '@kern/molecules/Section'
+import { BulletList } from '@kern/molecules/BulletList'
 import { BulletItem } from '@kern/atoms/BulletItem'
+import { Card } from '@kern/atoms/Card'
 import { InlineCode } from '@kern/atoms/InlineCode'
 import { ExternalLink } from '@kern/atoms/ExternalLink'
 import { DataTable } from '@kern/molecules/DataTable'
 
 export function ViewAbout() {
   return (
-    <div className="flex flex-col gap-12 max-w-3xl mx-auto w-full">
+    <ViewContainer width="lg" gap="lg">
 
       {/* ── Title + intro ── */}
       <div className="flex flex-col gap-3">
@@ -26,7 +29,7 @@ export function ViewAbout() {
 
       {/* ── How it works ── */}
       <Section title="How it works">
-        <div className="rounded-xl px-6 py-4 flex items-center justify-center bg-void-20 border border-void-30">
+        <Card padding="none" className="px-6 py-4 flex items-center justify-center">
           <code className="type-code text-void-70">
             <span className="text-(--primary)">#app</span>
             {' '}
@@ -34,7 +37,7 @@ export function ViewAbout() {
             {' '}
             <span className="text-supernova">button</span>
           </code>
-        </div>
+        </Card>
 
         <div className="grid grid-cols-3 gap-3">
           <ScoreBar axis="[a]" label="ID"    count={1} bg="var(--color-solstice)"  />
@@ -43,29 +46,29 @@ export function ViewAbout() {
         </div>
 
         <div className="grid grid-cols-3 gap-3">
-          <AxisCard title="ID selectors" examples="#header #nav" exampleColor="text-solstice">
-            Each <InlineCode colour="text-solstice" className="bg-void-30">#id</InlineCode> adds
+          <AxisCard title="ID selectors" examples="#header #nav" exampleColor="solstice">
+            Each <InlineCode colour="solstice" className="bg-void-30">#id</InlineCode> adds
             to the first column. Even a single ID outweighs any number of classes.
           </AxisCard>
           <AxisCard
             title="Classes, attributes, pseudo-classes"
             examples=".btn, :focus, [type]"
-            exampleColor="text-orbit"
+            exampleColor="orbit"
           >
-            Each <InlineCode colour="text-orbit" className="bg-void-30">.class</InlineCode>,{' '}
-            <InlineCode colour="text-orbit" className="bg-void-30">[attr]</InlineCode>, or{' '}
-            <InlineCode colour="text-orbit" className="bg-void-30">:hover</InlineCode> adds
+            Each <InlineCode colour="orbit" className="bg-void-30">.class</InlineCode>,{' '}
+            <InlineCode colour="orbit" className="bg-void-30">[attr]</InlineCode>, or{' '}
+            <InlineCode colour="orbit" className="bg-void-30">:hover</InlineCode> adds
             1 to the second column.
           </AxisCard>
           <AxisCard
             title="Type selectors & pseudo-elements"
             examples="div, span, ::after"
-            exampleColor="text-supernova"
+            exampleColor="supernova"
           >
             Each element tag like{' '}
-            <InlineCode colour="text-supernova" className="bg-void-30">p</InlineCode>,{' '}
-            <InlineCode colour="text-supernova" className="bg-void-30">h1</InlineCode>, or{' '}
-            <InlineCode colour="text-supernova" className="bg-void-30">::before</InlineCode> adds
+            <InlineCode colour="supernova" className="bg-void-30">p</InlineCode>,{' '}
+            <InlineCode colour="supernova" className="bg-void-30">h1</InlineCode>, or{' '}
+            <InlineCode colour="supernova" className="bg-void-30">::before</InlineCode> adds
             1 to the third column.
           </AxisCard>
         </div>
@@ -73,7 +76,7 @@ export function ViewAbout() {
 
       {/* ── How comparison works ── */}
       <Section title="How comparison works">
-        <ul className="flex flex-col gap-4 list-none p-0 m-0">
+        <BulletList className="gap-4">
           <BulletItem>
             Columns are compared left to right with ID being first. A score of <C>1-0-0</C> always
             beats <C>0-99-99</C>, because the first column wins outright.
@@ -102,7 +105,7 @@ export function ViewAbout() {
             the algorithm. The only way to override it is another <C>!important</C> with higher
             specificity, which is how specificity wars start. Use it as a last resort.
           </BulletItem>
-        </ul>
+        </BulletList>
       </Section>
 
       {/* ── Selector types table ── */}
@@ -179,14 +182,14 @@ export function ViewAbout() {
         />
       </Section>
 
-    </div>
+    </ViewContainer>
   )
 }
 
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
 function C({ children }: { children: ReactNode }) {
-  return <InlineCode colour="text-orbit">{children}</InlineCode>
+  return <InlineCode colour="orbit">{children}</InlineCode>
 }
 
 const AXIS_TEXT: Record<string, string> = {
@@ -208,7 +211,7 @@ function ScoreBar({ axis, label, count, bg }: { axis: string; label: string; cou
   )
 }
 
-type AxisColor = 'text-solstice' | 'text-orbit' | 'text-supernova'
+type AxisColor = 'solstice' | 'orbit' | 'supernova'
 
 function AxisCard({
   title, children, examples, exampleColor,
@@ -219,13 +222,13 @@ function AxisCard({
   exampleColor: AxisColor
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-xl p-4 bg-void-20 border border-void-30">
+    <Card className="flex flex-col gap-3">
       <p className="type-annotation-sc text-void-60">{title}</p>
       <p className="type-annotation text-void-60 m-0">{children}</p>
       <div className="mt-auto">
         <InlineCode colour={exampleColor} className="bg-void-30 whitespace-nowrap">{examples}</InlineCode>
       </div>
-    </div>
+    </Card>
   )
 }
 

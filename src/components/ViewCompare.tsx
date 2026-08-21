@@ -4,8 +4,11 @@ import { flattenAST, type DisplayToken } from '@/parser/flatten'
 import type { SpecificityResult } from '@/parser/types'
 import { TOKEN_CHIP, AXIS_COLORS } from './tokenStyles'
 import { cn } from '@/lib/utils'
-import { ViewHeader } from '@kern/molecules/ViewHeader'
+import { ViewContainer } from '@kern/templates/ViewContainer'
+import { ToolView } from '@kern/organisms/ToolView'
+import { Field } from '@kern/molecules/Field'
 import { CalloutCard } from '@kern/molecules/CalloutCard'
+import { Input } from '@kern/atoms/Input'
 import { InlineCode } from '@kern/atoms/InlineCode'
 
 export function ViewCompare() {
@@ -24,39 +27,34 @@ export function ViewCompare() {
     comparison === 1 ? 'a' : comparison === -1 ? 'b' : comparison === 0 ? 'tie' : null
 
   return (
-    <div className="flex flex-col gap-8 max-w-3xl mx-auto w-full">
-
-      <ViewHeader
+    <ViewContainer width="lg">
+      <ToolView
         title="Compare two selectors"
         description="Enter two selectors to see which one wins and why."
-      />
-
-      {/* ── Inputs side by side ── */}
-      <div className="grid grid-cols-2 gap-4">
-        <SelectorInput
-          id="input-a"
-          label="Selector A"
-          value={inputA}
-          onChange={setInputA}
-          result={resultA}
-          highlight={winner === 'a' ? 'win' : winner === 'tie' ? 'tie' : winner === 'b' ? 'lose' : null}
-        />
-        <SelectorInput
-          id="input-b"
-          label="Selector B"
-          value={inputB}
-          onChange={setInputB}
-          result={resultB}
-          highlight={winner === 'b' ? 'win' : winner === 'tie' ? 'tie' : winner === 'a' ? 'lose' : null}
-        />
-      </div>
-
-      {/* ── Verdict ── */}
-      {winner !== null && (
-        <Verdict winner={winner} resultA={resultA} resultB={resultB} />
-      )}
-
-    </div>
+        input={
+          <div className="grid grid-cols-2 gap-4">
+            <SelectorInput
+              label="Selector A"
+              value={inputA}
+              onChange={setInputA}
+              result={resultA}
+              highlight={winner === 'a' ? 'win' : winner === 'tie' ? 'tie' : winner === 'b' ? 'lose' : null}
+            />
+            <SelectorInput
+              label="Selector B"
+              value={inputB}
+              onChange={setInputB}
+              result={resultB}
+              highlight={winner === 'b' ? 'win' : winner === 'tie' ? 'tie' : winner === 'a' ? 'lose' : null}
+            />
+          </div>
+        }
+      >
+        {winner !== null && (
+          <Verdict winner={winner} resultA={resultA} resultB={resultB} />
+        )}
+      </ToolView>
+    </ViewContainer>
   )
 }
 
@@ -65,9 +63,8 @@ export function ViewCompare() {
 type Highlight = 'win' | 'lose' | 'tie' | null
 
 function SelectorInput({
-  id, label, value, onChange, result, highlight,
+  label, value, onChange, result, highlight,
 }: {
-  id: string
   label: string
   value: string
   onChange: (v: string) => void
@@ -81,38 +78,28 @@ function SelectorInput({
     return flattenAST(result.ast)[0] ?? []
   }, [result])
 
+  // Win/lose recolours the input border; error takes precedence via `invalid`.
+  const highlightClass =
+    highlight === 'win' ? 'border-supernova'
+      : highlight === 'lose' ? 'border-line-strong'
+        : ''
+
   return (
-    <div className="flex flex-col gap-2">
-      <label
-        htmlFor={id}
-        className="type-annotation-sc text-void-60"
-      >
-        {label}
-      </label>
-
-      <input
-        id={id}
-        type="text"
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder="e.g. .card > h2"
-        spellCheck={false}
-        autoComplete="off"
-        className={cn(
-          'type-code bg-void-10 rounded-xl px-4 py-3 w-full outline-none transition-colors duration-150 border placeholder:text-void-40',
-          hasError
-            ? 'border-flare text-flare'
-            : highlight === 'win'
-              ? 'border-supernova text-void-90'
-              : highlight === 'lose'
-                ? 'border-void-30 text-void-90'
-                : 'border-void-20 text-void-90 focus:border-void-40',
+    <div className="flex flex-col gap-3">
+      <Field label={label} error={hasError ? result?.error : undefined}>
+        {(control) => (
+          <Input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            invalid={hasError}
+            placeholder="e.g. .card > h2"
+            spellCheck={false}
+            autoComplete="off"
+            className={cn(!hasError && highlightClass)}
+            {...control}
+          />
         )}
-      />
-
-      {hasError && (
-        <p className="type-annotation text-flare">{result?.error}</p>
-      )}
+      </Field>
 
       {result && !hasError && (
         <div className="flex flex-col gap-3">
@@ -172,7 +159,7 @@ function Verdict({
     return (
       <CalloutCard colour="neutral">
         Both selectors have equal specificity{' '}
-        <InlineCode colour="text-void-80" className="bg-void-30">
+        <InlineCode colour="neutral" className="bg-void-30">
           {resultA ? formatSpecificity(resultA.specificity) : ''}
         </InlineCode>
         . Source order decides.
@@ -190,7 +177,7 @@ function Verdict({
         {winResult ? formatSpecificity(winResult.specificity) : ''}
       </InlineCode>
       {' > '}
-      <InlineCode colour="text-void-60" className="bg-void-30">
+      <InlineCode colour="neutral" className="bg-void-30">
         {loseResult ? formatSpecificity(loseResult.specificity) : ''}
       </InlineCode>
     </CalloutCard>

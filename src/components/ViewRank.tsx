@@ -2,7 +2,11 @@ import { useState, useMemo } from 'react'
 import { analyse, compareSpecificity, formatSpecificity, extractSelectors } from '@/parser/specificity'
 import { AXIS_COLORS } from './tokenStyles'
 import { cn } from '@/lib/utils'
-import { ViewHeader } from '@kern/molecules/ViewHeader'
+import { ViewContainer } from '@kern/templates/ViewContainer'
+import { ToolView } from '@kern/organisms/ToolView'
+import { Field } from '@kern/molecules/Field'
+import { EmptyState } from '@kern/molecules/EmptyState'
+import { Textarea } from '@kern/atoms/Textarea'
 import { InlineCode } from '@kern/atoms/InlineCode'
 
 interface RankedEntry {
@@ -52,52 +56,50 @@ export function ViewRank() {
   const hasInput = input.trim().length > 0
 
   return (
-    <div className="flex flex-col gap-8 max-w-3xl mx-auto w-full">
-
-      <ViewHeader
+    <ViewContainer width="lg">
+      <ToolView
         title="Rank a stylesheet"
         description="Paste any CSS below. All selectors are extracted, deduplicated, and sorted by specificity."
-      />
-
-      {/* ── Textarea ── */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-baseline justify-between">
-          <label htmlFor="css-input" className="type-annotation-sc text-void-60">
-            CSS
-          </label>
-          {ranked.length > 0 && (
-            <span className="type-annotation text-void-50">
-              {ranked.length} selector{ranked.length !== 1 ? 's' : ''}, ranked highest first
-            </span>
-          )}
-        </div>
-        <textarea
-          id="css-input"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          rows={10}
-          placeholder={PLACEHOLDER}
-          spellCheck={false}
-          className="type-code w-full bg-void-10 border border-void-20 focus:border-void-40 rounded-xl px-4 py-3 text-void-90 placeholder:text-void-40 outline-none resize-y transition-colors duration-150"
-        />
-      </div>
-
-      {/* ── Results ── */}
-      {hasInput && ranked.length === 0 && (
-        <p className="type-p-sm text-void-60">
-          No selectors found. Make sure your CSS contains rules like{' '}
-          <InlineCode colour="text-orbit">.class {'{ }'}</InlineCode>.
-        </p>
-      )}
-
-      {ranked.length > 0 && (
-        <div className="rounded-xl overflow-hidden border border-void-20">
-          {ranked.map((entry, i) => (
-            <RankRow key={entry.selector} entry={entry} rank={i + 1} total={ranked.length} />
-          ))}
-        </div>
-      )}
-    </div>
+        isEmpty={hasInput && ranked.length === 0}
+        input={
+          <Field
+            label="CSS"
+            aside={
+              ranked.length > 0 ? (
+                <span className="type-annotation text-ink-muted">
+                  {ranked.length} selector{ranked.length !== 1 ? 's' : ''}, ranked highest first
+                </span>
+              ) : undefined
+            }
+          >
+            {(control) => (
+              <Textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                rows={10}
+                placeholder={PLACEHOLDER}
+                spellCheck={false}
+                {...control}
+              />
+            )}
+          </Field>
+        }
+        empty={
+          <EmptyState>
+            No selectors found. Make sure your CSS contains rules like{' '}
+            <InlineCode colour="orbit">.class {'{ }'}</InlineCode>.
+          </EmptyState>
+        }
+      >
+        {ranked.length > 0 && (
+          <div className="rounded-xl overflow-hidden border border-void-20">
+            {ranked.map((entry, i) => (
+              <RankRow key={entry.selector} entry={entry} rank={i + 1} total={ranked.length} />
+            ))}
+          </div>
+        )}
+      </ToolView>
+    </ViewContainer>
   )
 }
 
