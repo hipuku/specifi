@@ -2,12 +2,7 @@ import { useState, useMemo } from 'react'
 import { analyse, compareSpecificity, formatSpecificity, extractSelectors } from '@/parser/specificity'
 import { AXIS_COLORS } from './tokenStyles'
 import { cn } from '@/lib/utils'
-import { ViewContainer } from '@kern/templates/ViewContainer'
-import { ToolView } from '@kern/organisms/ToolView'
-import { Field } from '@kern/molecules/Field'
-import { EmptyState } from '@kern/molecules/EmptyState'
-import { Textarea } from '@kern/atoms/Textarea'
-import { InlineCode } from '@kern/atoms/InlineCode'
+import { EmptyState, Field, InlineCode, Textarea, ToolView, ViewContainer } from 'kern'
 
 interface RankedEntry {
   selector: string

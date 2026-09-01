@@ -4,12 +4,7 @@ import { flattenAST, type DisplayToken } from '@/parser/flatten'
 import type { SpecificityResult } from '@/parser/types'
 import { TOKEN_CHIP, AXIS_COLORS } from './tokenStyles'
 import { cn } from '@/lib/utils'
-import { ViewContainer } from '@kern/templates/ViewContainer'
-import { ToolView } from '@kern/organisms/ToolView'
-import { Field } from '@kern/molecules/Field'
-import { CalloutCard } from '@kern/molecules/CalloutCard'
-import { Input } from '@kern/atoms/Input'
-import { InlineCode } from '@kern/atoms/InlineCode'
+import { CalloutCard, Field, InlineCode, Input, ToolView, ViewContainer } from 'kern'
 
 export function ViewCompare() {
   const [inputA, setInputA] = useState('')

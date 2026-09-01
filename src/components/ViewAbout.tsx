@@ -1,12 +1,5 @@
 import type { ReactNode } from 'react'
-import { ViewContainer } from '@kern/templates/ViewContainer'
-import { Section } from '@kern/molecules/Section'
-import { BulletList } from '@kern/molecules/BulletList'
-import { BulletItem } from '@kern/atoms/BulletItem'
-import { Card } from '@kern/atoms/Card'
-import { InlineCode } from '@kern/atoms/InlineCode'
-import { ExternalLink } from '@kern/atoms/ExternalLink'
-import { DataTable } from '@kern/molecules/DataTable'
+import { BulletItem, BulletList, Card, DataTable, ExternalLink, InlineCode, Section, ViewContainer } from 'kern'
 
 export function ViewAbout() {
   return (

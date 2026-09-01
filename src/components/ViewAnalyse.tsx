@@ -4,13 +4,7 @@ import { simpleToToken } from '@/parser/flatten'
 import type { SelectorListNode, ComplexSelectorNode, CompoundSelectorNode, CombinatorNode } from '@/parser/types'
 import { TOKEN_CHIP } from './tokenStyles'
 import { cn } from '@/lib/utils'
-import { ViewContainer } from '@kern/templates/ViewContainer'
-import { ToolView } from '@kern/organisms/ToolView'
-import { Field } from '@kern/molecules/Field'
-import { Metric } from '@kern/molecules/Metric'
-import { EmptyState } from '@kern/molecules/EmptyState'
-import { Input } from '@kern/atoms/Input'
-import { ToggleChip } from '@kern/atoms/ToggleChip'
+import { EmptyState, Field, Input, Metric, ToggleChip, ToolView, ViewContainer } from 'kern'
 
 const EXAMPLES = [
   'nav > ul li.active',
