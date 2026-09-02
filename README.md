@@ -4,11 +4,11 @@ CSS specificity visualiser in the browser. Live at [specifi.hipuku.dev](https://
 
 ## Tools
 
-**Analyse** — parse any selector and see its three-axis score (a, b, c) with a full token-by-token breakdown of every ID, class, attribute, pseudo-class, and element.
+**Analyse** parses any selector and see its three-axis score (a, b, c) with a full token-by-token breakdown of every ID, class, attribute, pseudo-class, and element.
 
-**Compare** — enter two selectors side by side; the tool computes which wins and why, with inline token visualisation for each.
+**Compare** takes two selectors side by side and computes which wins and why, with inline token visualisation for each.
 
-**Rank** — paste any stylesheet; all selectors are extracted, deduplicated, and sorted highest-to-lowest by specificity.
+**Rank** takes a stylesheet. All selectors are extracted, deduplicated, and sorted highest-to-lowest by specificity.
 
 ## Parser
 
