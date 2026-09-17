@@ -1,5 +1,5 @@
 import { useState }      from 'react'
-import { Info, Search, GitCompare, ListChecks } from 'lucide-react'
+import { GitCompare, Info, ListChecks, Search } from 'lucide-react'
 import { AppShell, Colophon, SocialBar } from 'kern'
 import { ViewAbout }      from '@/components/ViewAbout'
 import { ViewAnalyse }    from '@/components/ViewAnalyse'
@@ -30,7 +30,7 @@ export default function App() {
       activeId={activeView}
       onNavigate={(id) => setActiveView(id as ViewId)}
       accentActiveClass="text-solstice"
-      social={<SocialBar siteName="specifi" githubUrl="https://github.com/hipuku/specifi" />}
+      social={<SocialBar siteName="specifi" />}
       colophon={<Colophon name="specifi" hoverFills={LOGO_FILLS} />}
       smallScreenNotice={
         <div className="flex flex-col gap-2 text-center max-w-xs">
