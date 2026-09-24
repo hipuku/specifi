@@ -1,24 +1,18 @@
 # specifi
 
-CSS specificity visualiser in the browser. Live at [specifi.hipuku.dev](https://specifi.hipuku.dev).
+A CSS specificity visualiser, built on a from-scratch Selectors Level 4 parser. Live at [specifi.hipuku.dev](https://specifi.hipuku.dev).
 
 ## Tools
 
-**Analyse** parses any selector and see its three-axis score (a, b, c) with a full token-by-token breakdown of every ID, class, attribute, pseudo-class, and element.
+- **Analyse** a selector: its (a, b, c) score, token by token.
+- **Compare** two selectors: which wins, and why.
+- **Rank** a stylesheet: every selector, sorted by specificity.
 
-**Compare** takes two selectors side by side and computes which wins and why, with inline token visualisation for each.
-
-**Rank** takes a stylesheet. All selectors are extracted, deduplicated, and sorted highest-to-lowest by specificity.
-
-## Parser
-
-The core is a from-scratch tokeniser → recursive descent parser → specificity calculator in TypeScript. It handles the full CSS Selectors Level 4 surface area: `:not()`, `:is()`, `:has()`, `:where()`, `:nth-child(An+B of S)`, attribute operators, pseudo-elements, combinators, and selector lists.
+The parser handles `:is()`, `:where()`, `:not()`, `:has()`, `:nth-child(An+B of S)`, attribute operators, pseudo-elements, combinators and selector lists.
 
 ## Stack
 
-- React 19 + TypeScript
-- Vite, Tailwind CSS v4, [kern](https://github.com/hipuku/kern) (shared component library), Base UI (headless form primitives)
-- Parkinsans + Geist Mono (Google Fonts)
+React 19, TypeScript, Vite, Tailwind CSS v4, [kern](https://github.com/hipuku/kern).
 
 ## Development
 
@@ -27,4 +21,8 @@ npm install
 npm run dev
 ```
 
-See [DESIGN.md](DESIGN.md) for engineering rationale.
+`npm test`, `npm run lint` and `npm run typecheck` run the checks CI runs.
+
+## Licence
+
+MIT
