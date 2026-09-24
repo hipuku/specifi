@@ -16,7 +16,7 @@ export function ViewAbout() {
             specificity
           </ExternalLink>{' '}
           to decide which one takes effect. Defined in the CSS Selectors spec, it is a three part
-          score <C>(a, b, c)</C> — IDs, classes and elements — compared left to right.
+          score <C>(a, b, c)</C> (IDs, classes and elements), compared left to right.
         </p>
       </div>
 
@@ -116,9 +116,9 @@ export function ViewAbout() {
             ['[attr$=val]',  'Attribute (suffix)',    'b', '[src$=".png"]'],
             ['[attr*=val]',  'Attribute (contains)',  'b', '[title*="tip"]'],
             [':pseudo',      'Pseudo-class',          'b', ':hover, :focus'],
-            [':not(S)',      'Negation — max(S)',     'b', ':not(.active)'],
-            [':is(S)',       'Matches — max(S)',      'b', ':is(h1, h2)'],
-            [':has(S)',      'Relational — max(S)',   'b', ':has(> img)'],
+            [':not(S)',      'Negation: max(S)',     'b', ':not(.active)'],
+            [':is(S)',       'Matches: max(S)',      'b', ':is(h1, h2)'],
+            [':has(S)',      'Relational: max(S)',   'b', ':has(> img)'],
             [':where(S)',    'Zero-specificity',      '0', ':where(.card)'],
             ['element',      'Type selector',         'c', 'div, span'],
             ['custom-el',    'Custom element',        'c', 'my-button'],
@@ -134,7 +134,7 @@ export function ViewAbout() {
       </Section>
 
       {/* ── Combinators ── */}
-      <Section title="Combinators — no specificity contribution">
+      <Section title="Combinators: no specificity contribution">
         <p className="type-p-sm text-void-60">
           Combinators describe relationships between selectors. They never add to the score.
         </p>
@@ -167,9 +167,9 @@ export function ViewAbout() {
         <DataTable
           columns={['Feature', 'Example', 'Note']}
           rows={[
-            [<span className="whitespace-nowrap">Inline styles</span>,           <span className="font-mono text-orbit whitespace-nowrap">{'style="color: red"'}</span>,  'Beats any selector — treated as (1,0,0,0), a fourth column above IDs.'],
+            [<span className="whitespace-nowrap">Inline styles</span>,           <span className="font-mono text-orbit whitespace-nowrap">{'style="color: red"'}</span>,  'Beats any selector. Treated as (1,0,0,0), a fourth column above IDs.'],
             [<span className="whitespace-nowrap">!important</span>,              <span className="font-mono text-orbit whitespace-nowrap">color: red !important</span>,   'Creates a separate override layer that wins over all non-important rules regardless of specificity.'],
-            [<span className="whitespace-nowrap">:is() / :not() / :has()</span>, <span className="font-mono text-orbit whitespace-nowrap">:is(#id, .class)</span>,       'Take the specificity of their most specific argument — not their own name.'],
+            [<span className="whitespace-nowrap">:is() / :not() / :has()</span>, <span className="font-mono text-orbit whitespace-nowrap">:is(#id, .class)</span>,       'Take the specificity of their most specific argument, not their own name.'],
             [<span className="whitespace-nowrap">:where()</span>,                <span className="font-mono text-orbit whitespace-nowrap">:where(#id, .class)</span>,    "Always contributes zero specificity, no matter what's inside."],
           ]}
         />

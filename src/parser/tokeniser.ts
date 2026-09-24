@@ -7,7 +7,7 @@ export function tokenise(input: string): Token[] {
   while (i < input.length) {
     const ch = input[i]
 
-    // Whitespace — only significant as a descendant combinator between compounds
+    // Whitespace: only significant as a descendant combinator between compounds
     if (/\s/.test(ch)) {
       let j = i
       while (j < input.length && /\s/.test(input[j])) j++
@@ -18,7 +18,7 @@ export function tokenise(input: string): Token[] {
       continue
     }
 
-    // Comments /* ... */ — skip entirely
+    // Comments /* ... */: skip entirely
     if (ch === '/' && input[i + 1] === '*') {
       i += 2
       while (i < input.length && !(input[i] === '*' && input[i + 1] === '/')) i++
@@ -155,7 +155,7 @@ export function tokenise(input: string): Token[] {
       const start = i
       if (ch === '-') i++
       while (i < input.length && /[\d]/.test(input[i])) i++
-      // handle 2n, 2n+1 etc — keep as part of the raw string consumed by parser
+      // handle 2n, 2n+1 etc: keep as part of the raw string consumed by parser
       tokens.push({ type: 'NUMBER', value: input.slice(start, i), pos: start })
       continue
     }

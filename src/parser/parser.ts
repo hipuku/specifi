@@ -84,7 +84,7 @@ class Parser {
         continue
       }
 
-      // Descendant combinator — whitespace followed by a compound selector start
+      // Descendant combinator: whitespace followed by a compound selector start
       if (next.type === 'COMBINATOR_DESCENDANT') {
         // Peek ahead past whitespace to see if a compound selector follows
         let ahead = this.pos + 1
@@ -96,7 +96,7 @@ class Parser {
           after.type === 'COMMA' ||
           after.type === 'RPAREN'
         ) break
-        // Check if next non-whitespace is an explicit combinator — if so, skip whitespace only
+        // Check if next non-whitespace is an explicit combinator: if so, skip whitespace only
         if (
           after.type === 'COMBINATOR_CHILD' ||
           after.type === 'COMBINATOR_ADJACENT' ||
@@ -244,7 +244,7 @@ class Parser {
     }
 
     if (nthSelectorPseudos.has(pseudoName)) {
-      // nth-child(2n+1 of .class) — consume the An+B part, then optionally "of <selector-list>"
+      // nth-child(2n+1 of .class): consume the An+B part, then optionally "of <selector-list>"
       const rawArg = this.consumeNthArgument()
       this.skipWhitespace()
       // Check for "of <selector-list>"

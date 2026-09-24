@@ -49,10 +49,10 @@ function specificityOfSimple(node: SimpleSelector): Specificity {
 function specificityOfPseudoClass(node: PseudoClassNode): Specificity {
   const name = node.name.toLowerCase()
 
-  // :where() — always zero
+  // :where(): always zero
   if (ZERO_SPECIFICITY_PSEUDOS.has(name)) return ZERO
 
-  // :nth-child(An+B of S) — (0,1,0) for the pseudo-class itself plus max specificity of "of S"
+  // :nth-child(An+B of S): (0,1,0) for the pseudo-class itself plus max specificity of "of S"
   // Must be checked before the generic SELECTOR_PSEUDOS path since nth-child is in that set
   if ((name === 'nth-child' || name === 'nth-last-child') && node.argument && typeof node.argument !== 'string') {
     let argSpec = ZERO
@@ -62,7 +62,7 @@ function specificityOfPseudoClass(node: PseudoClassNode): Specificity {
     return add({ a: 0, b: 1, c: 0 }, argSpec)
   }
 
-  // :not(), :is(), :has(), :matches() — take max specificity of their argument list
+  // :not(), :is(), :has(), :matches(): take max specificity of their argument list
   if (SELECTOR_PSEUDOS.has(name) && node.argument && typeof node.argument !== 'string') {
     let result = ZERO
     for (const sel of node.argument.selectors) {
@@ -178,14 +178,14 @@ export function extractSelectors(css: string): Array<{ selector: string; line: n
           selectorBuffer = ''
           selectorStartLine = -1
         } else if (depth === 0 && closes === 0) {
-          // No braces at root depth — buffer as potential multi-line selector continuation
+          // No braces at root depth: buffer as potential multi-line selector continuation
           const trimmed = line.trim()
           if (trimmed && !/^\s*@/.test(trimmed)) {
             if (selectorStartLine < 0) selectorStartLine = lineNum
             selectorBuffer = selectorBuffer ? selectorBuffer + ' ' + trimmed : trimmed
           }
         } else {
-          // Closing braces or nested content — reset buffer
+          // Closing braces or nested content: reset buffer
           selectorBuffer = ''
           selectorStartLine = -1
         }

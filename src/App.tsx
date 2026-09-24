@@ -39,7 +39,7 @@ export default function App() {
             <code className="font-mono text-solstice">#desktop</code>
           </p>
           <p className="type-p-sm text-ink-body">
-            specifi is desktop-only for now. Open it on a wider screen — higher specificity wins.
+            specifi is desktop-only for now. Open it on a wider screen. Higher specificity wins.
           </p>
         </div>
       }

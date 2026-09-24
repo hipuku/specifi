@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { analyse, compareSpecificity, extractSelectors, formatSpecificity } from './specificity'
 
-describe('analyse — basic selectors', () => {
+describe('analyse: basic selectors', () => {
   it('universal selector contributes zero', () => {
     expect(analyse('*').specificity).toEqual({ a: 0, b: 0, c: 0 })
   })
@@ -31,7 +31,7 @@ describe('analyse — basic selectors', () => {
   })
 })
 
-describe('analyse — combined selectors', () => {
+describe('analyse: combined selectors', () => {
   it('adds contributions across selector parts', () => {
     expect(analyse('#id .class div').specificity).toEqual({ a: 1, b: 1, c: 1 })
   })
@@ -46,7 +46,7 @@ describe('analyse — combined selectors', () => {
   })
 })
 
-describe('analyse — functional pseudo-classes', () => {
+describe('analyse: functional pseudo-classes', () => {
   it(':where() always contributes zero', () => {
     expect(analyse(':where(.foo, #bar)').specificity).toEqual({ a: 0, b: 0, c: 0 })
   })
@@ -75,9 +75,9 @@ describe('analyse — functional pseudo-classes', () => {
   })
 })
 
-describe('analyse — selector lists', () => {
+describe('analyse: selector lists', () => {
   it('returns the max specificity across a comma-separated list', () => {
-    // div (0,0,1) vs #id (1,0,0) — returns max
+    // div (0,0,1) vs #id (1,0,0): returns max
     expect(analyse('div, #id').specificity).toEqual({ a: 1, b: 0, c: 0 })
   })
 
@@ -88,7 +88,7 @@ describe('analyse — selector lists', () => {
   })
 })
 
-describe('analyse — error cases', () => {
+describe('analyse: error cases', () => {
   it('returns an error for at-rules', () => {
     expect(analyse('@media (max-width: 768px)').error).toBeDefined()
   })

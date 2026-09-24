@@ -84,7 +84,7 @@ export function simpleToToken(node: SimpleSelector): DisplayToken {
       const hasSelectorArg = node.argument && typeof node.argument !== 'string'
       const text = hasSelectorArg ? `:${name}(…)` : node.argument ? `:${name}(${node.argument})` : `:${name}`
 
-      // :not/:is/:has — axis depends on their argument (shown separately or summarised)
+      // :not/:is/:has: axis depends on their argument (shown separately or summarised)
       const isSelectorPseudo = ['not', 'is', 'has', 'matches'].includes(name)
       if (isSelectorPseudo) {
         return { text, axis: 'b', label: `${name}(…)`, isCombinator: false }
