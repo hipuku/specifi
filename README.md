@@ -1,5 +1,7 @@
 # specifi
 
+![specifi: analysing `#app .card:hover button:not(.ghost)`, scoring 1-3-1 with a per-component breakdown](docs/screenshot.png)
+
 A CSS specificity visualiser, built on a from-scratch Selectors Level 4 parser. Live at [specifi.hipuku.dev](https://specifi.hipuku.dev).
 
 ## Tools
